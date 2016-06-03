@@ -1,0 +1,2 @@
+manage.py command in terminal:
+  python manage.py {runserver, shell, db} [-?]
