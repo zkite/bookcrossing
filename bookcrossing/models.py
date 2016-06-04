@@ -4,14 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-OWNER = {'Dima': 1, 'Alex': 2}
-
 
 class Book(db.Model):
     __tablename__ = 'books'
 
     id = db.Column(Integer, primary_key=True)
-    id_owner = OWNER
+    id_owner = db.Column(Integer, autoincrement=False)
     title = db.Column(String(length=256))
     author = db.Column(String(length=256))
     category = db.Column(String(length=256))
