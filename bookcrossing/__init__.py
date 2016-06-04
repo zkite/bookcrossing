@@ -25,3 +25,4 @@ engine = config.ProductionConfig.create_engine()
 
 #  Register your urls here
 api.add_resource(resources.Index, '/', '/index')
+api.add_resource(resources.Book, '/books', '/books/<int:bookid>')
