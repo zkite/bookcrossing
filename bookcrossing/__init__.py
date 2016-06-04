@@ -1,10 +1,11 @@
 import config
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_log import Logging
 from flask_restful import Api
 from bookcrossing import resources
+
+from bookcrossing.models import db
 
 app = Flask(__name__,
             root_path=config.root_path,
@@ -17,7 +18,8 @@ api = Api(app, prefix='/bookcrossing/v1')
 
 flask_log = Logging(app)
 
-db = SQLAlchemy(app)
+db.init_app(app)
+
 engine = config.ProductionConfig.create_engine()
 
 

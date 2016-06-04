@@ -19,6 +19,7 @@ class Config:
     #  http://killtheyak.com/use-postgresql-with-django-flask/
     #  http://eax.me/postgresql-install/  --> just look how to create db, user
     SQLALCHEMY_DATABASE_URI = "postgresql://{{test_user}}:{{password}}@localhost/{{test_database}}"
+    DATABASE_URL = "postgresql://localhost/{{test_database}}"
 
     @staticmethod
     def create_engine():
