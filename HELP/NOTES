@@ -1,9 +1,3 @@
 Please, fulfil .gitignore file with your specific files
 
 Leave here your comments or ideas(whatever)
-
-
-1. Check DB. Models, migrations work on test_psql_db
-2. All manage.py commands work
-3. Got Responses from Resources
-4. Static, Template paths work

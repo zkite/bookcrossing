@@ -1,16 +1,15 @@
 import datetime
 
 from flask_sqlalchemy import SQLAlchemy
-from bookcrossing import app
 
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column('id', db.Integer, primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True, unique=True, autoincrement=True)
     login = db.Column('login', db.String(30), nullable=False, unique=True)
     password = db.Column('password', db.String(30), nullable=False)
     email = db.Column('email', db.String(60), nullable=False, unique=True)
@@ -110,7 +109,3 @@ class BookRequest(db.Model):
                                                                                                    self.book_id,
                                                                                                    self.req_user_id,
                                                                                                    self.owner_user_id)
-
-
-# create tables
-# db.create_all()

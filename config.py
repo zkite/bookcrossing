@@ -15,28 +15,25 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     FLASK_LOG_LEVEL = 'DEBUG'
 
-    @staticmethod
-    def create_psql_engine():
-        engine = create_engine('postgresql://localhost/{{test_database}}')
-        return engine
-
 
 class ProductionConfig(Config):
     DEBUG = False
 
-    #  TODO set up DB
-    #  http://killtheyak.com/use-postgresql-with-django-flask/
-    #  http://eax.me/postgresql-install/  --> just look how to create db, user
-    SQLALCHEMY_DATABASE_URI = "postgresql://{{test_user}}:{{password}}@localhost/{{test_database}}"
-    DATABASE_URL = "postgresql://localhost/{{test_database}}"
+    SQLALCHEMY_DATABASE_URI = "postgresql://dima:dima@localhost/bookcrossing"
+    DATABASE_URL = "postgresql://localhost/bookcrossing"
+
+    @staticmethod
+    def create_psql_engine():
+        engine = create_engine('postgresql://localhost/bookcrossing')
+        return engine
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class TestingConfig(Config):
     DEBUG = False
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
