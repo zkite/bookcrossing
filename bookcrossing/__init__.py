@@ -3,9 +3,9 @@ import config
 from flask import Flask
 from flask_log import Logging
 from flask_restful import Api
-from bookcrossing import resources
 
-from bookcrossing.models import db
+from bookcrossing.resources import resources
+from bookcrossing.models.models import db
 
 app = Flask(__name__,
             root_path=config.root_path,
@@ -20,9 +20,7 @@ flask_log = Logging(app)
 
 db.init_app(app)
 
-engine = config.ProductionConfig.create_engine()
-
+#engine = config.ProductionConfig.create_engine()
 
 #  Register your urls here
 api.add_resource(resources.Index, '/', '/index')
-api.add_resource(resources.BookRes, '/books', '/books/<int:bookid>')
