@@ -14,7 +14,7 @@ class User(db.Model):
 	email = db.Column('email', db.String(60), nullable=False, unique=True)
 	first_name = db.Column('first_name', db.String(30))
 	last_name = db.Column('last_name', db.String(30))
-	office = db.Column('office', db.String(20))  #, nullable=False)
+	office = db.Column('office', db.String(20), nullable=False)
 	phone_number = db.Column('phone_number', db.String(20))
 	limit = db.Column('limit', db.Integer, default=0)
 	points = db.Column('points', db.Integer, default=0)
