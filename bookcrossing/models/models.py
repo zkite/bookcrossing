@@ -22,13 +22,12 @@ class User(db.Model):
 
     office_id = db.Column('office_id', db.Integer, db.ForeignKey('offices.id'))
 
-    def __init__(self, login, password, email, first_name, last_name, office, phone_number):
+    def __init__(self, login, password, email, first_name, last_name, phone_number):
         self.login = login
         self.password = password
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-        self.office = office
         self.phone_number = phone_number
 
     def __repr__(self):
@@ -74,11 +73,10 @@ class Book(db.Model):
     category_id = db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, title, author, publisher, category):
+    def __init__(self, title, author, publisher):
         self.title = title
         self.author = author
         self.publisher = publisher
-        self.category = category
 
     def __repr__(self):
         return "<Book Title: {0}, Author: {1}, Category: {2}>".format(self.title,
@@ -103,7 +101,7 @@ class BookRequest(db.Model):
         self.accept_date = accept_date
 
     def __repr__(self):
-        return "<ID: {0}, REQ_DATE: {1}, ACPT_DATE: {2}, BOOK: {3}, USER: {4}, OWNER: {5}>".format(self.id,
+        return "<Request ID: {0}, REQ_DATE: {1}, ACPT_DATE: {2}, BOOK: {3}, USER: {4}, OWNER: {5}>".format(self.id,
                                                                                                    self.request_date,
                                                                                                    self.accept_date,
                                                                                                    self.book_id,
