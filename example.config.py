@@ -15,6 +15,15 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     FLASK_LOG_LEVEL = 'DEBUG'
 
+    # EMAIL SETTINGS
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLC = False
+    MAIL_DEFAULT_SENDER = '"bookcrossing" my-email@gmail.com'
+    MAIL_USERNAME = 'my-email@gmail.com'
+    MAIL_PASSWORD = 'my-email-password'
+
 
 class ProductionConfig(Config):
     DEBUG = False
