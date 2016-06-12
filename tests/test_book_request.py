@@ -6,7 +6,8 @@ from bookcrossing.models.models import (db,
                                         User,
                                         Book,
                                         BookRequest)
-from bookcrossing.utils.book_request import create_book_request
+from bookcrossing.utils.book_request import (create_book_request,
+                                             accept_request)
 
 
 class TestBookRequest(TestCase):
@@ -54,6 +55,26 @@ class TestBookRequest(TestCase):
         self.assertEqual(book_request.book_id, 12345)
         self.assertEqual(book_request.req_user_id, 22222)
         self.assertEqual(book_request.owner_user_id, 11111)
+
+    def test_accept_request(self):
+        test_book_request = BookRequest(12345, 22222, 11111)
+
+        owner = User.query.get(11111)
+        owner.points = 1
+
+        book = Book.query.get(12345)
+        book.visible = False
+
+        db.session.add(test_book_request)
+        db.session.commit()
+
+        accept_req_bool = accept_request(test_book_request.id)
+
+        self.assertEqual(accept_req_bool, True)
+        self.assertEqual(owner.points, 0)
+        self.assertEqual(book.visible, True)
+        self.assertEqual(book.user_id, 22222)
+        self.assertNotIn(test_book_request, db.session)
 
     def tearDown(self):
         db.session.remove()
