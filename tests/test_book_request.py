@@ -7,7 +7,7 @@ from bookcrossing.models.models import (db,
                                         Book,
                                         BookRequest)
 from bookcrossing.utils.book_request import (create_book_request,
-                                             accept_request)
+                                             remove_request)
 
 
 class TestBookRequest(TestCase):
@@ -68,7 +68,7 @@ class TestBookRequest(TestCase):
         db.session.add(test_book_request)
         db.session.commit()
 
-        accept_req_bool = accept_request(test_book_request.id)
+        accept_req_bool = remove_request(test_book_request.id)
 
         self.assertEqual(accept_req_bool, True)
         self.assertEqual(owner.points, 0)

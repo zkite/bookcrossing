@@ -1,13 +1,9 @@
 import uuid
 
-from flask_mail import Message, Mail
-
 from bookcrossing.models.models import(User,
                                        Book,
                                        BookRequest,
                                        db)
-
-mail = Mail()
 
 
 def generate_uuid() -> str:
@@ -35,7 +31,7 @@ def create_book_request(book_id: int, requester_id: int) -> bool:
         return False
 
 
-def accept_request(request_id: int) -> bool:
+def remove_request(request_id: int) -> bool:
     book_request = BookRequest.query.get(request_id)
 
     book = Book.query.get(book_request.book_id)
@@ -51,13 +47,4 @@ def accept_request(request_id: int) -> bool:
 
     db.session.commit()
 
-    return True
-
-
-def send_email_notification(recipient: str, title: str, msg_body: str) -> bool:
-    msg = Message(title,
-                  sender='dmytro.test.test@gmail.com',
-                  recipients=[recipient])
-    msg.body = msg_body
-    mail.send(msg)
     return True

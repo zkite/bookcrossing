@@ -1,8 +1,7 @@
 from flask import make_response
 from flask_restful import Resource
 
-from bookcrossing.utils.book_request import (create_book_request,
-                                             send_email_notification)
+from bookcrossing.utils.book_request import create_book_request
 
 
 class BookRequestResource(Resource):
@@ -15,8 +14,8 @@ class BookRequestResource(Resource):
         book_req = create_book_request(book_id,
                                        requester_id)
         if book_req:
-            send_email_notification('fenderoksp@gmail.com', 'Hello Title', 'Hello MSG BODY')
-            send_email_notification('fenderoksp@gmail.com', 'Hello Title', 'Hello MSG BODY')
+            #send_email_notification('fenderoksp@gmail.com', 'Hello Title', 'Hello MSG BODY')
+            #send_email_notification('fenderoksp@gmail.com', 'Hello Title', 'Hello MSG BODY')
             return make_response('Book Request OK, MSG SEND')
 
         else:

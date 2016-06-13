@@ -1,15 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>
-</head>
-<body>
+{% extends "bootstrap/base.html" %}
 
-{% block content %}{% endblock content %}
+{% block title %}BookCros{% endblock title %}
 
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-</html>
+
+{% block content %}
+<div class="container">
+
+    {% if current_user.is_authenticated %}
+    <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+    {% else %}
+    <li><a href="{{ url_for('login') }}">Log In</a></li>
+    {% endif %}
+
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
