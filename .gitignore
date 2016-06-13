@@ -134,3 +134,4 @@ fabric.properties
 config.py
 migrations
 *.pyc
+venv
