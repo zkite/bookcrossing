@@ -1,9 +1,9 @@
 import uuid
 
-from bookcrossing.models.models import(User,
-                                       Book,
-                                       BookRequest,
-                                       db)
+from bookcrossing.models.models import (User,
+                                        Book,
+                                        BookRequest,
+                                        db)
 
 
 def generate_uuid() -> str:

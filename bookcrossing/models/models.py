@@ -11,17 +11,13 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column('id', db.Integer, primary_key=True, unique=True, autoincrement=True)
-
     login = db.Column('login', db.String(30), nullable=False, unique=True)
-
-    password_hash = db.Column(db.String(100), nullable=False)
-
+    password_hash = db.Column('password_hash', db.String(100), nullable=False)
     email = db.Column('email', db.String(60), nullable=False, unique=True)
     first_name = db.Column('first_name', db.String(30))
     last_name = db.Column('last_name', db.String(30))
     office = db.Column('office', db.String(20), nullable=False)
     phone_number = db.Column('phone_number', db.String(20))
-
     limit = db.Column('limit', db.Integer, default=0)
     points = db.Column('points', db.Integer, default=0)
 
@@ -95,7 +91,6 @@ class Book(db.Model):
     author = db.Column('author', db.String(80), nullable=False)
     publisher = db.Column('publisher', db.String(40), nullable=False)
     visible = db.Column('visible', db.Boolean, default=True)
-
     category_id = db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 
@@ -118,7 +113,6 @@ class BookRequest(db.Model):
     request_date = db.Column('request_date', db.DateTime, nullable=False)
     accept_date = db.Column('accept_date', db.DateTime, default=None)
     notification_counter = db.Column('notification_counter', db.Integer, default=0)
-
     book_id = db.Column('book_id', db.Integer, db.ForeignKey('books.id'))
     req_user_id = db.Column('req_user_id', db.Integer, db.ForeignKey('users.id'))
     owner_user_id = db.Column('owner_user_id', db.Integer, db.ForeignKey('users.id'))

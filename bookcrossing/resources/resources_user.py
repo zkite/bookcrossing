@@ -14,7 +14,6 @@ def hello():
     return render_template('index.html', users=users)
 
 
-
 def registration():
     form = RegistrationForm()
     if form.validate_on_submit():
