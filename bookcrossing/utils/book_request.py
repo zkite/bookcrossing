@@ -50,3 +50,7 @@ def remove_request(request_id: int) -> bool:
     db.session.commit()
 
     return True
+
+
+def get_book_requests():
+    pass

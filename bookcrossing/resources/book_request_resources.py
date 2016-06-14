@@ -2,12 +2,17 @@ from flask import make_response
 from flask_restful import Resource
 
 from bookcrossing.utils.book_request import (create_book_request,
-                                             remove_request)
+                                             remove_request,
+                                             get_book_requests)
 
 from bookcrossing.mail.email import send_email
 
 
 class BookRequestResource(Resource):
+    def get(self, request_id=None):
+        book_requests = get_book_requests()
+        pass
+
     def post(self, book_id=None, requester_id=None):
 
         if not requester_id or not book_id:

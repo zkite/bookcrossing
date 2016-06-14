@@ -5,13 +5,14 @@ from flask_log import Logging
 from flask_restful import Api
 from flask_bootstrap import Bootstrap
 
-from bookcrossing.models.models import db
-from bookcrossing.resources import resources, book_request_resources
 
-from bookcrossing.models.models import login_manager
+from bookcrossing.resources import (resources,
+                                    book_request_resources)
+from bookcrossing.models.models import (login_manager,
+                                        db)
 from bookcrossing.mail import mail
-
-from bookcrossing.resources.resources_user import (hello, registration,
+from bookcrossing.resources.resources_user import (hello,
+                                                   registration,
                                                    login,
                                                    logout)
 
