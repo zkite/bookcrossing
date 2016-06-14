@@ -36,7 +36,8 @@ with app.app_context():
 #  Register your urls here
 api.add_resource(resources.Index, '/', '/index')
 api.add_resource(book_request_resources.BookRequestResource,
-                 '/book-request/<int:book_id>/<int:requester_id>')
+                 '/book-request/<int:book_id>/<int:requester_id>',
+                 '/book-request/<int:request_id>')
 
 bootstrap = Bootstrap()
 login_manager.session_protection = 'strong'
