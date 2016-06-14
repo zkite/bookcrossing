@@ -6,7 +6,6 @@ from bookcrossing.forms.registration_user import (RegistrationForm,
                                                   LoginForm)
 
 from bookcrossing.models.models import User
-from bookcrossing.mail.email import send_email
 from bookcrossing.mail.email import send_async_email
 
 
@@ -29,8 +28,10 @@ def registration():
         db.session.commit()
         flash('You can now login.')
         flash('A confirmation email has been sent to you by email.')
-        # send_email(user.email, 'Your Account in BookCros', user.last_name)
-        send_async_email(user.email, 'Your Account in BookCros', user.last_name)
+        send_async_email(user.email,
+                         'Your Account in Bookcrossing',
+                         'email/greeting',
+                         user=user)
         return redirect(url_for('login'))
     return render_template('registration.html', form=form)
 

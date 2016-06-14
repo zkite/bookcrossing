@@ -20,8 +20,8 @@ class Config:
     MAIL_SERVER = 'smtp.yandex.ua'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'admbookcross@yandex.ru'
+    MAIL_PASSWORD = 'admkcross'
 
 
 class ProductionConfig(Config):
