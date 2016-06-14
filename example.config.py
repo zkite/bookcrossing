@@ -17,7 +17,7 @@ class Config:
     FLASK_LOG_LEVEL = 'DEBUG'
 
     # EMAIL SETTINGS
-    MAIL_SERVER = 'smtp.yandex.ua'
+    MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'admbookcross@yandex.ru'
