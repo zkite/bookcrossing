@@ -76,6 +76,8 @@ class Category(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(20), nullable=False)
 
+    books = db.relationship('Book', backref='category')
+
     def __init__(self, name):
         self.name = name
 
