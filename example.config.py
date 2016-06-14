@@ -17,11 +17,11 @@ class Config:
     FLASK_LOG_LEVEL = 'DEBUG'
 
     # EMAIL SETTINGS
-    MAIL_SERVER = 'smtp.yandex.ua'
+    MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'admbookcross@yandex.ru'
+    MAIL_PASSWORD = 'admkcross'
 
 
 class ProductionConfig(Config):
