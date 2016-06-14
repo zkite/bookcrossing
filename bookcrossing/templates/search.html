@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+       <div class="col-md-12">
+
+                {% if categories %}
+                    <form action="/search" method="post">
+                        <div class="col-md-3">
+                        <select class="form-control" name="select">
+                                {% for category in categories %}
+                                    <option value="{{ category['name'] }}">{{ category['name'] }}</option>
+                                {% endfor %}
+                        </select>
+                        </div>
+                        <input class="btn btn-default" type="submit" value="Get books by category">
+                    </form>
+                {% endif %}
+
+                {% if books %}
+                    <hr />
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Owner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in books %}
+                                <tr>
+                                    <td class="col-md-3"><a href="/books/{{  book['id'] }}">{{ book['title'] }}</a></td>
+                                    <td class="col-md-3">{{ book['author'] }}</td>
+                                    <td class="col-md-3">{{ book['category'] }}</td>
+                                    <td class="col-md-3">{{ book['owner'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <hr/>
+                    <h3>Search word must have from 3 to 30 characters</h3>
+                {% endif %}
+
+       </div>
+</div>
+
+{% endblock %}
