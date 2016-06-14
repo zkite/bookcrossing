@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    requested=requested
+    {% for request in requested %}
+        <h1>{{ request.id }}</h1>
+    {% endfor %}
+
+    sent_requests=sent_requests
+    {% for request in sent_requests %}
+        <h1>{{ request.accept_date }}</h1>
+    {% endfor %}
+
+{% endblock page_content %}

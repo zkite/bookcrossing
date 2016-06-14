@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+    (login, fname, lname, office, email, book list)
+    <h1>Hello Other User Profile!!!!</h1>
+    <h1>{{ user.login }}</h1>
+    <h1>{{ user.last_name }}</h1>
+    <h1>{{ user.first_name }}</h1>
+    <h1>{{ user.office }}</h1>
+    <h1>{{ user.email }}</h1>
+    {% for book in books %}
+        <h1>{{ book.title }}</h1>
+    {% endfor %}
+
+{% endblock page_content %}
