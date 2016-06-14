@@ -1,16 +1,11 @@
-from flask_script import (Manager,
-                          Shell)
-from flask_migrate import (Migrate,
-                           MigrateCommand)
+from flask_script import Manager, Shell
+from flask_migrate import Migrate, MigrateCommand
 
 from bookcrossing import app, db
 from bookcrossing.models.models import User
 
 manager = Manager(app)
-
 migrate = Migrate(app, db)
-
-manager.add_command('db', MigrateCommand)
 
 
 def make_shell_context():
