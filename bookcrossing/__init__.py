@@ -50,8 +50,8 @@ app.add_url_rule('/logout', 'logout', logout)
 
 #  Register your REST urls here
 api.add_resource(book_request_resources.BookRequestResource,
-                 '/book-request/<int:book_id>/<int:requester_id>',
-                 '/book-request/<int:request_id>',
-                 '/show-requests/<int:user_id>')
+                 '/book-request/<int:book_id>/<int:requester_id>',  # method == 'POST'
+                 '/book-request/<int:request_id>',  # method == 'DELETE'
+                 '/user-book-requests/<int:user_id>')  # method == 'GET'
 api.add_resource(show_user_profile.ShowProfile,
-                 '/show-user-profile/<int:user_id>')
+                 '/show-user-profile/<int:user_id>')  # method == 'GET'
