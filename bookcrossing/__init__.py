@@ -9,11 +9,11 @@ from bookcrossing.resources import (book_request_resources,
 from bookcrossing.models.models import (login_manager,
                                         db)
 from bookcrossing.mail import mail
-
 from bookcrossing.resources.resources_user import (hello,
                                                    registration,
                                                    login,
                                                    logout)
+import bookcrossing.resources.books as books
 
 # app = Flask(__name__,
 #             root_path=config.root_path,
@@ -47,6 +47,12 @@ app.add_url_rule('/registration', 'registration', registration, methods=['GET', 
 app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
 app.add_url_rule('/logout', 'logout', logout)
 
+# books CRUD
+app.add_url_rule('/books', 'books.index', books.index)
+app.add_url_rule('/books/new', 'books.new', books.new, methods=['GET', 'POST'])
+app.add_url_rule('/books/<int:book_id>', 'books.show', books.show)
+app.add_url_rule('/books/<int:book_id>/edit', 'books.edit', books.edit, methods=['GET'])
+app.add_url_rule('/books/<int:book_id>/edit', 'books.update', books.update, methods=['POST'])
 
 #  Register your REST urls here
 api.add_resource(book_request_resources.BookRequestResource,
