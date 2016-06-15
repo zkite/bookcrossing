@@ -1,13 +1,4 @@
-from bookcrossing.models.models import (User,
-                                        Book)
-
-
-def get_user(user_id: int) -> object:
-    user = User.query.get(user_id)
-    if not user:
-        return None
-    else:
-        return user
+from bookcrossing.models.models import Book
 
 
 def get_user_books(user_id: int) -> list:
