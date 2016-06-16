@@ -21,7 +21,7 @@ def new():
     for c in categories:
         db.session.add(c)
     db.session.commit()
-
+  
     form = BookForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.order_by('name')]
 
