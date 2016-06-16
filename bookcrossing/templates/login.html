@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-<<<<<<< HEAD
 {% block body %}
 <div class="page-header">
     <h1>Login</h1>
@@ -8,16 +7,4 @@
 <div class="col-md-8  col-lg-6">
     {{ wtf.quick_form(form) }}
 </div>
-=======
-
-{% block title %} Login{% endblock %}
-
-{% block page_content %}
-    <div class="page-header">
-        <h1>Login</h1>
-    </div>
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
-    </div>
->>>>>>> master
 {% endblock %}

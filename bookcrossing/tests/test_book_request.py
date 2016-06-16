@@ -57,7 +57,7 @@ class TestBookRequest(TestCase):
         self.assertEqual(book_request.req_user_id, 22222)
         self.assertEqual(book_request.owner_user_id, 11111)
 
-    def test_remove_request(self):
+    def test_accept_request(self):
         test_book_request = BookRequest(12345, 22222, 11111)
 
         owner = User.query.get(11111)

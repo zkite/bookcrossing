@@ -1,5 +1,4 @@
 from flask_wtf import Form
-from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import InputRequired, Length, Email, Regexp, EqualTo
 from bookcrossing.models.user import UserModel
@@ -28,19 +27,9 @@ class RegistrationForm(Form):
     submit = SubmitField('Register')
 
     def validate_email(self, field):
-<<<<<<< HEAD:bookcrossing/forms/register_form.py
         if UserModel.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')
 
     def validate_login(self, field):
         if UserModel.query.filter_by(login=field.data).first():
-=======
-        user = User.query.filter_by(email=field.data).first()
-        if user and user.id != current_user.id:
-            raise ValidationError('Email already registered.')
-
-    def validate_login(self, field):
-        user = User.query.filter_by(email=field.data).first()
-        if user and user.id != current_user.id:
->>>>>>> master:bookcrossing/forms/registration_user.py
             raise ValidationError('Username already in use.')
