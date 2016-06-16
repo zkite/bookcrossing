@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+    {% if requested %}
+    <h2>Requested Books</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Request Date</th>
+            <th>Accept Date</th>
+            <th>Book ID</th>
+            <th>Requester ID</th>
+            <th>Owner ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for request in requested %}
+            <tr>
+                <td>{{ request.request_date }}</td>
+                {% if request.accpt_date %}
+                    <td>request.accept_date</td>
+                {% else %}
+                    <td>Is not accepted yet</td>
+                {% endif %}
+                <td>{{ request.book_id }}</td>
+                <td>{{ request.req_user_id }}</td>
+                <td>{{ request.owner_user_id }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if sent_requests %}
+    <h2>Sent Book Requests</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Request Date</th>
+            <th>Accept Date</th>
+            <th>Book ID</th>
+            <th>Requester ID</th>
+            <th>Owner ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for request in sent_requests %}
+            <tr>
+                <td>{{ request.request_date }}</td>
+                {% if request.accpt_date %}
+                    <td>request.accept_date</td>
+                {% else %}
+                    <td>Is not accepted yet</td>
+                {% endif %}
+                <td>{{ request.book_id }}</td>
+                <td>{{ request.req_user_id }}</td>
+                <td>{{ request.owner_user_id }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if not requested and not sent_requests %}
+        <h2>You have no requests!</h2>
+    {% endif %}
+
+{% endblock page_content %}

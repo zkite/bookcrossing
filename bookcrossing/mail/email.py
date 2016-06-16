@@ -22,6 +22,7 @@ def create_message(to, subject, template, **kwargs):
 
 
 def send_email(to, subject, template, **kwargs):
+
     message = create_message(to, subject, template, **kwargs)
     mail.send(message)
 
