@@ -1,27 +1,4 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block page_content %}
-    <div class="page-header">
-
-        <h1>Hello,
-            {% if current_user.is_authenticated %}
-                {{ current_user.login }}
-            {% else %}
-                Stranger
-            {% endif %}!
-        </h1>
-
-        <a href="{{ url_for('registration') }}">Registraion</a>
-        <br>
-        <a href="{{ url_for('login') }}">Login</a>
-    </div>
-
-    <h1>Already registered users:</h1>
-    <ul>
-    {% for item in users %}
-        <li>{{ item }}</li>
-        <hr>
-    {% endfor %}
-    </ul>
+{% extends 'layout.html' %}
+{% block body %}
+    <h1>Hello everybody</h1>
 {% endblock %}

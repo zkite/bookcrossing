@@ -1,4 +1,4 @@
-from bookcrossing.models import db
+from bookcrossing import db
 from marshmallow_sqlalchemy import ModelSchema
 
 class BookModel(db.Model):

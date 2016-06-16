@@ -14,7 +14,7 @@ def get_book_category(book_object, category_model):
 
 def get_book_owner(book_object, user_model):
 	""" Return books owner """
-	return user_model.query.get(book_object.user_id).username
+	return user_model.query.get(book_object.user_id).login
 
 
 def book_formation(book_object, book_schema, book_category_cb, book_owner_cb, category_model, user_model):

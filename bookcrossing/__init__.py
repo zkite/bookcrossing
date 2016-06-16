@@ -1,50 +1,51 @@
-import config
+import os
 
-from flask import Flask
-# from flask_login import Logging
+from flask import Flask, g
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, current_user
 from flask_restful import Api
-from flask_bootstrap import Bootstrap
+from flask_mail import Mail, Message
+from bookcrossing.config import runtime_config
 
-from bookcrossing.models.models import db
-from bookcrossing.models.models import login_manager
-from bookcrossing.mail import mail
-from bookcrossing.resources import resources, book_request_resources
 
-from bookcrossing.resources.resources_user import (hello,
-                                                   registration,
-                                                   login,
-                                                   logout)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# app = Flask(__name__,
-#             root_path=config.root_path,
-#             template_folder=config.template_folder,
-#             static_folder=config.static_folder)
+
+# dev, prod, test
+APP_STATUS = 'dev'
+
+mail = Mail()
 
 app = Flask(__name__)
-app.config.from_object(config.DevelopmentConfig)
+app.config.from_object(runtime_config(APP_STATUS))
 
-api = Api(app, prefix='/bookcrossing/v1')
 
-# flask_log = Logging(app)
-# with app.app_context():
-#     db.create_all()
-# engine = config.DevelopmentConfig.create_psql_engine()
+api = Api(app)
+db = SQLAlchemy(app)
+mail.init_app(app)
 
-#  Register your urls here
-api.add_resource(resources.Index, '/', '/index')
-api.add_resource(book_request_resources.BookRequestResource, '/book-request/<int:book_id>/<int:requester_id>')
-
-bootstrap = Bootstrap()
-login_manager.session_protection = 'strong'
+login_manager = LoginManager()
+login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-db.init_app(app)
-bootstrap.init_app(app)
-mail.init_app(app)
-login_manager.init_app(app)
+
+from bookcrossing.resources.index import Index
+from bookcrossing.resources.login import Login
+from bookcrossing.resources.register import Register
+from bookcrossing.resources.logout import Logout
+from bookcrossing.resources.search import Search
+from bookcrossing.resources.book import BooksResource, BookProfileResource
+from bookcrossing.resources.requests import RequestsResource, RequestProfileResource
 
 
-app.add_url_rule('/', 'hello', hello)
-app.add_url_rule('/registration', 'registration', registration, methods=['GET', 'POST'])
-app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
-app.add_url_rule('/logout', 'logout', logout)
+api.add_resource(Index, '/')
+api.add_resource(Login, '/login')
+api.add_resource(Register, '/register')
+api.add_resource(Logout, '/logout')
+api.add_resource(Search, '/search')
+api.add_resource(BooksResource, '/books')
+api.add_resource(BookProfileResource, '/books/<int:book_id>')
+api.add_resource(RequestsResource, '/requests', '/requset/<int:req_id>', '/books/<int:book_id>/requests')
+api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req_id>')
+
+

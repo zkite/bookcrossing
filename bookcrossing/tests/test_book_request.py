@@ -6,7 +6,7 @@ from bookcrossing.models.models import (db,
                                         User,
                                         Book,
                                         BookRequest)
-from bookcrossing.utils.book_request import (create_book_request,
+from bookcrossing.utils.request_utils import (create_book_request,
                                              remove_request)
 
 

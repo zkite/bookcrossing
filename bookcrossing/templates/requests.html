@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<script>
+
+function accept_req(req_id) {
+    var uri = "/requset/" + req_id
+    $.ajax({
+               url: uri,
+               type: "PUT",
+               success: function (data) {
+                    console.log(JSON.parse(data))
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                   console.log(jqXHR);
+                   console.log(textStatus);
+                   console.log(errorThrown);
+                   alert('Error update request');
+               }
+           });
+}
+
+</script>
+
+<h2>User {% if category %}{{ category }}{% endif %} requests list</h2>
+<br/>
+<br/>
+<div class="row">
+        <div class="col-md-12">
+
+        <form id='select-form' action="/requests" method="get" name="select" style="margin-left: -15px">
+            <div class="col-md-3">
+                <select class="form-control" form="select-form" name="select">
+                    {% if category == 'incoming' %}
+                        <option selected value="incoming">Incoming</option>
+                    {% else %}
+                        <option value="incoming">Incoming</option>
+                    {% endif %}
+                    {% if category == 'outcoming' %}
+                        <option selected value="outcoming">Outcoming</option>
+                    {% else %}
+                        <option value="outcoming">Outcoming</option>
+                    {% endif %}
+                </select>
+            </div>
+            <input class="btn btn-default" type="submit" value="Get requests">
+        </form>
+        <br/>
+        <br/>
+            {% if requests %}
+                    <table class="table table-hover" style="margin-top:-11px">
+                        <thead>
+                            <tr>
+                                <th>Book title</th>
+                                <th>Requester</th>
+                                <th>Request date</th>
+                                <th>Accepter</th>
+                                <th>Accept date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    {% for req in requests %}
+                        <tr id="{{ req['id'] }}">
+                            <td class="col-md-2" id="req-book-title">{{ req['title'] }}</td>
+                            <td class="col-md-2" id="requester">{{ req['requester'] }}</td>
+                            <td class="col-md-2" id="req-date">{{ req['request_date'] }}</td>
+                            <td class="col-md-2" id="accepter">{{ req['accepter'] }}</td>
+                            <td class="col-md-2" id="accept-date">{{ req['accept_date'] }}</td>
+                            <td class="col-md-2">
+                                {% if category == 'incoming' %}
+                                    <button type="button" class="btn btn-info" onclick="accept_req('{{ req["id"] }}')">Accept</button>
+                                    <button type="button" class="btn btn-danger" onclick="decline_req('{{ req["id"] }}')">Decline</button>
+                                {% endif %}
+                                {% if category == 'outcoming' %}
+                                    <button type="button" class="btn btn-danger" onclick="decline_req('{{ req["id"] }}')">Decline</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                        </tbody>
+                    </table>
+
+        {% endif %}
+        </div>
+</div>
+
+{% endblock %}

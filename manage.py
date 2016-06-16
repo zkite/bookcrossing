@@ -1,30 +1,25 @@
-from flask_script import Manager, Shell
+from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from bookcrossing import app, db
-from bookcrossing.models.models import User
 
 manager = Manager(app)
 migrate = Migrate(app, db)
 
-
-def make_shell_context():
-    return dict(app=app, db=db, User=User)
-
-
-manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 
 @manager.command
-def create_tables():
-    db.create_all()
+def create_db():
+	"""Creates the db tables."""
+	db.create_all()
 
 
 @manager.command
-def drop_tables():
-    db.drop_all()
+def drop_db():
+	"""Drops the db tables."""
+	db.drop_all()
 
 
 if __name__ == '__main__':
-    manager.run()
+	manager.run()
