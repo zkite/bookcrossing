@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_restful import Api
 from flask_mail import Mail, Message
-from bookcrossing.config import runtime_config
+from config import runtime_config
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))

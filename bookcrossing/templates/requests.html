@@ -21,6 +21,24 @@ function accept_req(req_id) {
            });
 }
 
+function delete_req(req_id) {
+    var uri = "/requset/" + req_id
+    $.ajax({
+               url: uri,
+               type: "DELETE",
+               success: function (data) {
+                   console.log(JSON.parse(data));
+                   alert('Book Request DELETED')
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                   console.log(jqXHR);
+                   console.log(textStatus);
+                   console.log(errorThrown);
+                   alert('Error DELETE request');
+               }
+           });
+}
+
 </script>
 
 <h2>User {% if category %}{{ category }}{% endif %} requests list</h2>
@@ -70,11 +88,18 @@ function accept_req(req_id) {
                             <td class="col-md-2" id="accept-date">{{ req['accept_date'] }}</td>
                             <td class="col-md-2">
                                 {% if category == 'incoming' %}
+                                    {% if not req['accept_date'] %}
                                     <button type="button" class="btn btn-info" onclick="accept_req('{{ req["id"] }}')">Accept</button>
                                     <button type="button" class="btn btn-danger" onclick="decline_req('{{ req["id"] }}')">Decline</button>
+                                    {% endif %}
                                 {% endif %}
                                 {% if category == 'outcoming' %}
-                                    <button type="button" class="btn btn-danger" onclick="decline_req('{{ req["id"] }}')">Decline</button>
+                                    {% if not req['accept_date'] %}
+                                        <button type="button" class="btn btn-danger" onclick="decline_req('{{ req["id"] }}')">Decline</button>
+                                    {% endif %}
+                                    {% if req['accept_date'] and user.login == req['requester'] %}
+                                        <button type="button" class="btn btn-info" onclick="delete_req('{{ req["id"] }}')">Ok. I've got the book!</button>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>

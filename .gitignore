@@ -131,7 +131,7 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-config.py
+myconfig.py
 migrations
 *.pyc
 venv
