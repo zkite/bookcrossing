@@ -199,6 +199,7 @@
                         <th>Author</th>
                         <th>Publisher</th>
                         <th>Category</th>
+                        <th>Owner</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -206,12 +207,19 @@
                     {% for book in shelf %}
                         {% if book.visible %}
                             <tr id="{{ book['id'] }}">
-                                <td class="col-md-3" id="book-title"><a
+                                <td class="col-md-2" id="book-title"><a
                                         href="/books/{{ book['id'] }}">{{ book['title'] }}</a></td>
                                 <td class="col-md-2" id="book-author">{{ book['author'] }}</td>
                                 <td class="col-md-2" id="book-publisher">{{ book['publisher'] }}</td>
                                 <td class="col-md-2" id="book-category">{{ book['category'] }}</td>
-                                <td class="col-md-3">
+                                <!-- TODO define in JS book.user_id field -->
+                                <!-- TODO Find my idea in last commit -->
+                                <!-- TODO THANKS :)-->
+                                <!--
+                                <td class="col-md-2" id="book-owner"><a
+                                        href="/user-profile/{{ book['user_id'] }}"> {{ book['user_id'] }}</a></td>
+                                        -->
+                                <td class="col-md-2">
                                     <button type="button" class="btn btn-info" onclick="edit_book('{{ book["id"] }}')">
                                         Edit
                                     </button>

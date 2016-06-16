@@ -36,6 +36,7 @@ from bookcrossing.resources.logout import Logout
 from bookcrossing.resources.search import Search
 from bookcrossing.resources.book import BooksResource, BookProfileResource
 from bookcrossing.resources.requests import RequestsResource, RequestProfileResource
+from bookcrossing.resources.get_user_profile import ShowProfile
 
 
 api.add_resource(Index, '/')
@@ -47,5 +48,7 @@ api.add_resource(BooksResource, '/books')
 api.add_resource(BookProfileResource, '/books/<int:book_id>')
 api.add_resource(RequestsResource, '/requests', '/requset/<int:req_id>', '/books/<int:book_id>/requests')
 api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req_id>')
+
+api.add_resource(ShowProfile, '/user-profile/<int:user_id>')
 
 
