@@ -1,0 +1,284 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<script>
+function IsJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+// /books/<int:book_id>/requests'
+function request_book(book_id) {
+        var uri = "/books/" + book_id + "/requests"
+        $.ajax({
+                   url: uri,
+                   type: "POST",
+                   success: function (data) {
+                        alert('Request is successfull')
+                   },
+                   error: function (jqXHR, textStatus, errorThrown) {
+                       console.log(jqXHR);
+                       console.log(textStatus);
+                       console.log(errorThrown);
+                       alert('Error create request');
+                   }
+               });
+    }
+
+function save_book() {
+    $('.text-danger').remove();
+    console.log($('#form').serialize());
+
+    // ajax adding data to database
+    $.ajax({
+               url: '{{ url_for('booksresource') }}',
+               type: "POST",
+               data: $('#form').serialize(),
+               success: function (data) {
+
+                   var element = '';
+
+                   if (IsJson(data)) {
+                       data = JSON.parse(data);
+
+                       if (data['title']) {
+                           element = "<p class='text-danger'>" + data['title'][0] + "</p>";
+                           $('#title').append(element);
+                       }
+
+                       if (data['author']) {
+                           element = "<p class='text-danger'>" + data['author'][0] + "</p>";
+                           $('#author').append(element);
+                       }
+
+                       if (data['category']) {
+                           element = "<p class='text-danger'>" + data['category'][0] + "</p>";
+                           $('#category').append(element);
+                       }
+
+                       if (data['publisher']) {
+                           element = "<p class='text-danger'>" + data['publisher'][0] + "</p>";
+                           $('#publisher').append(element);
+                       }
+
+                   } else {
+                       //hide modal
+                       $('#modal_form').modal('hide');
+                       //reload page
+                       location.reload();
+                   }
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                   console.log(jqXHR);
+                   console.log(textStatus);
+                   console.log(errorThrown);
+                   alert('Error adding / update data');
+               }
+           });
+}
+
+function delete_book(id) {
+
+    //form data
+    var book = {};
+    book['id'] = id;
+
+    $.ajax({
+               url: "{{ url_for('booksresource') }}",
+               data: JSON.stringify(book),
+               type: "DELETE",
+               contentType: "application/json",
+
+               success: function (data) {
+
+                   //data = JSON.parse(data)
+                   //console.log(data)
+                   //if success reload ajax table
+                   //$('#modal_form').modal('hide');
+                   var element = '#' + data['id'];
+                   $(element).remove();
+
+                   location.href = '/books'
+
+               },
+
+               error: function (jqXHR, textStatus, errorThrown) {
+                   alert('Error deleting data');
+               }
+           });
+}
+
+function edit_book(id) {
+    console.log(id)
+    var hidden_input = "<input id='hidden' type='hidden' name='id' value='" + id + "'>";
+    $('#form').append(hidden_input);
+
+    $('#btn-save').hide();
+    $('#btn-update').show();
+
+    fields = {'title': '#book-title',
+        'author': '#book-author',
+        'publisher': '#book-publisher',
+        'category': '#book-category'
+    };
+
+    $('[name="title"]').val($(fields['title']).text());
+    $('[name="author"]').val($(fields['author']).text());
+    $('[name="publisher"]').val($(fields['publisher']).text());
+    $('[name="category"]').val($(fields['category']).text());
+
+    $('.text-danger').remove();
+    $('#modal_form').modal('show');
+    $('.modal-title').text('Edit Book');
+
+}
+
+function update_book() {
+    $('.text-danger').remove();
+    //console.log($('#form').serialize());
+
+    $.ajax({
+               url: '{{ url_for("booksresource") }}',
+               type: "PUT",
+               data: $('#form').serialize(),
+               success: function (data) {
+
+                   var element = '';
+
+                   if (IsJson(data)) {
+                       data = JSON.parse(data);
+
+                       if (data['title']) {
+                           element = "<p class='text-danger'>" + data['title'][0] + "</p>";
+                           $('#title').append(element);
+                       }
+
+                       if (data['author']) {
+                           element = "<p class='text-danger'>" + data['author'][0] + "</p>";
+                           $('#author').append(element);
+                       }
+
+                       if (data['category']) {
+                           element = "<p class='text-danger'>" + data['category'][0] + "</p>";
+                           $('#category').append(element);
+                       }
+
+                       if (data['publisher']) {
+                           element = "<p class='text-danger'>" + data['publisher'][0] + "</p>";
+                           $('#publisher').append(element);
+                       }
+
+                   } else {
+                       //remove hiiden input
+                       $('#hidden').remove();
+
+                       //hide modal
+                       $('#modal_form').modal('hide');
+                       //reload page
+                       location.reload();
+                   }
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                   console.log(jqXHR);
+                   console.log(textStatus);
+                   console.log(errorThrown);
+                   alert('Error adding / update data');
+               }
+           });
+}
+
+</script>
+
+
+<h2>Book profile page</h2>
+<hr/>
+{% if book %}
+    <div style="font-size:20px">
+        <div class="row">
+            <p>
+                <div class="col-md-2"><b>Title:</b></div>
+                <div id="book-title" class="col-md-5">{{ book['title'] }}</div>
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                <div class="col-md-2"><b>Author:</b></div>
+                <div id="book-author" class="col-md-5">{{ book['author'] }}</div>
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                <div class="col-md-2"><b>Publisher:</b></div>
+                <div id="book-publisher" class="col-md-5">{{ book['publisher'] }}</div>
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                <div class="col-md-2"><b>Category:</b></div>
+                <div id="book-category" class="col-md-5">{{ book['category'] }}</div>
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                <div class="col-md-2"><b>Owner:</b></div>
+                <div class="col-md-5">{{ book['owner'] }}</div>
+            </p>
+        </div>
+    </div>
+    <br>
+    {% if g.user.is_authenticated %}
+        {% if owner %}
+            <button type="button" class="btn btn-info" style="width: 80px" onclick="edit_book('{{ book["id"] }}')">Edit</button>
+            <button type="button" class="btn btn-danger" style="width: 80px" onclick="delete_book('{{ book["id"] }}')">Delete</button>
+        {% else %}
+            <button id="request-btn" type="button" class="btn btn-success" style="width: 80px" onclick="request_book('{{ book["id"] }}')">Request</button>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+<div class="modal fade" id="modal_form" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Book Form</h3>
+            </div>
+            <div class="modal-body form">
+            <form id="form" method="post">
+
+                <div id="title" class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control"  placeholder="Title" name="title">
+                </div>
+
+                <div id="author" class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" class="form-control"  placeholder="Author" name="author">
+                </div>
+
+                <div id="publisher" class="form-group">
+                    <label for="publisher">Publisher</label>
+                    <input type="text" class="form-control" placeholder="Publisher" name="publisher">
+                </div>
+
+                <div id="category" class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" class="form-control" placeholder="Category" name="category">
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-update" onclick="update_book()" class="btn btn-warning" >Update</button>
+                <button type="button" id="btn-save" onclick="save_book()" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

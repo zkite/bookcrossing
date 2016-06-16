@@ -2,7 +2,7 @@ from flask_testing import TestCase
 from flask import Flask
 
 from bookcrossing import db
-from config import TestingConfig
+from myconfig import TestingConfig
 from bookcrossing.models.models import User
 
 

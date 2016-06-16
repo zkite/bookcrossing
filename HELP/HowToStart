@@ -1,5 +1,0 @@
-To start the project just do fol. commands:
-  1. remove prefix 'example.' in file 'example.config.py'
-  2. in your python venv 'pip install -r requirements'
-  3. in terminal run 'python manage.py runserver'
-  4. in browser open link 'http://127.0.0.1:5000/bookcrossing/v1/'

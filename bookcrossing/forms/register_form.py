@@ -2,11 +2,13 @@ from flask_wtf import Form
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import InputRequired, Length, Email, Regexp, EqualTo
-from bookcrossing.models.models import User
+from bookcrossing.models.user import UserModel
 
 
 class RegistrationForm(Form):
-    login = StringField('Login', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    login = StringField('Login', validators=[InputRequired('Login is required'),
+                                             Length(min=3, max=20, message='Username must have from 5 to 12 characters'),
+                                             Regexp('^[A-z0-9].*$', message='Input doesnt match with required pattern')])
 
     email = StringField('Email', validators=[InputRequired(), Length(1, 64), Email()])
 
@@ -16,17 +18,23 @@ class RegistrationForm(Form):
 
     office = StringField('Office', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
 
-    phone_number = StringField('Phone Number',
-                               validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    phone = StringField('Phone', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
 
     password = PasswordField('Password',
-                             validators=[InputRequired(), EqualTo('password2', message='Passwords NOT match.')])
+                             validators=[InputRequired(), EqualTo('confirm', message='Passwords must match.')])
 
-    password2 = PasswordField('Confirm password', validators=[InputRequired()])
+    confirm = PasswordField('Confirm password', validators=[InputRequired()])
 
     submit = SubmitField('Register')
 
     def validate_email(self, field):
+<<<<<<< HEAD:bookcrossing/forms/register_form.py
+        if UserModel.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_login(self, field):
+        if UserModel.query.filter_by(login=field.data).first():
+=======
         user = User.query.filter_by(email=field.data).first()
         if user and user.id != current_user.id:
             raise ValidationError('Email already registered.')
@@ -34,12 +42,5 @@ class RegistrationForm(Form):
     def validate_login(self, field):
         user = User.query.filter_by(email=field.data).first()
         if user and user.id != current_user.id:
+>>>>>>> master:bookcrossing/forms/registration_user.py
             raise ValidationError('Username already in use.')
-
-
-class LoginForm(Form):
-    login = StringField('Login', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
-
-    password = PasswordField('Password', validators=[InputRequired()])
-
-    submit = SubmitField('LogIn')

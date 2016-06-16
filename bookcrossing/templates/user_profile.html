@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>This is your profile, {{ current_user.login }}</h1>
+    </div>
+
+<div style="font-size:20px">
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>Login:</b></div>
+        <div id="book-title" class="col-md-5">{{ current_user.login|e }}</div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>Email:</b></div>
+        <div id="book-author" class="col-md-5">{{ current_user.email|e }}</div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>First Name:</b></div>
+        <div id="book-publisher" class="col-md-5">{{ current_user.first_name|e }}</div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>Last Name:</b></div>
+        <div id="book-category" class="col-md-5">{{ current_user.last_name|e }}</div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>Office:</b></div>
+        <div class="col-md-5">{{ current_user.office|e }}</div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+        <div class="col-md-2"><b>Phone:</b></div>
+        <div class="col-md-5">{{ current_user.phone_number|e }}</div>
+        </p>
+    </div>
+</div>
+
+
+<div>
+    <br />
+    <a class="btn btn-default" href="{{ url_for('edit_profile') }}" style="margin-left: -2px"> Edit Profile</a>
+</div>
+
+{% endblock %}
