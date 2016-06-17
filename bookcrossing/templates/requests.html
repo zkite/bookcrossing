@@ -28,6 +28,7 @@ function delete_req(req_id) {
                success: function (data) {
                    console.log(JSON.parse(data));
                    alert('Book Request DELETED')
+                   location.reload()
                },
                error: function (jqXHR, textStatus, errorThrown) {
                    console.log(jqXHR);
