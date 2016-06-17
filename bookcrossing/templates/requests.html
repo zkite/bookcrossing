@@ -26,8 +26,7 @@ function delete_req(req_id) {
                url: uri,
                type: "DELETE",
                success: function (data) {
-                   console.log(JSON.parse(data));
-                   alert('Book Request DELETED')
+                   //console.log(JSON.parse(data));
                    location.reload()
                },
                error: function (jqXHR, textStatus, errorThrown) {
