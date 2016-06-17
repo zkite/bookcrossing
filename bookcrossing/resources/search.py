@@ -34,16 +34,20 @@ class Search(Resource):
                 books = search_books(search_form, BookModel, get_book_category, get_book_owner, book_formation,
                                      BookSchema(), CategoryModel, UserModel)
                 if books:
-                    return make_response(render_template('search.html', books=books, categories=categories), 200,
+                    return make_response(render_template('search.html', books=books, categories=categories),
+                                         200,
                                          self.headers)
             else:
-                return make_response(render_template('search.html', categories=categories), 200, self.headers)
+                return make_response(render_template('search.html', categories=categories),
+                                     200,
+                                     self.headers)
 
         if select_form:
             books = get_books_by_category(select_form, CategoryModel, BookModel, BookSchema(), get_book_owner,
                                           get_book_category, book_formation, UserModel)
             if books:
-                return make_response(render_template('search.html', books=books, categories=categories), 200,
+                return make_response(render_template('search.html', books=books, categories=categories, select_category=select_form),
+                                     200,
                                      self.headers)
             else:
                 return make_response(render_template('search.html', categories=categories), 200, self.headers)

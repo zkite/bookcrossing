@@ -10,7 +10,11 @@
                         <div class="col-md-3">
                         <select class="form-control" name="select">
                                 {% for category in categories %}
-                                    <option value="{{ category['name'] }}">{{ category['name'] }}</option>
+                                    {% if select_category == category['name'] %}
+                                        <option selected value="{{ category['name'] }}">{{ category['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ category['name'] }}">{{ category['name'] }}</option>
+                                    {% endif %}
                                 {% endfor %}
                         </select>
                         </div>
