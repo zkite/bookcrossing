@@ -37,8 +37,8 @@ from bookcrossing.resources.index import Index
 # from bookcrossing.resources.register import Register
 # from bookcrossing.resources.logout import Logout
 from bookcrossing.resources.search import Search
-from bookcrossing.resources.book import BooksResource, BookProfileResource
-from bookcrossing.resources.book import BooksResource, BookProfileResource
+from bookcrossing.resources.books.book import BooksResource, BookProfileResource
+from bookcrossing.resources.books.book import BooksResource, BookProfileResource
 from bookcrossing.resources.requests import RequestsResource, RequestProfileResource
 
 

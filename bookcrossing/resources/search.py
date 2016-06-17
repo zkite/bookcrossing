@@ -1,12 +1,11 @@
+from flask import render_template, request, make_response
+from flask_restful import Resource
+
 from bookcrossing.models.book import BookModel, BookSchema
 from bookcrossing.models.category import CategoryModel, CategorySchema
 from bookcrossing.models.user import UserModel
-
-from flask import render_template, request, make_response
 from bookcrossing.forms.search import SearchForm
-from flask_restful import Resource
-
-from bookcrossing.utils.book_utils import get_book_category, get_book_owner, book_formation, \
+from bookcrossing.resources.books.book_utils import get_book_category, get_book_owner, book_formation, \
     get_category_list, search_books, get_books_by_category, get_all_books
 
 

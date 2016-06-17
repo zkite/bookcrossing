@@ -1,16 +1,15 @@
 import json
 
+from flask import render_template, request, make_response
+from flask_login import current_user, login_required
+from flask_restful import Resource
+
 from bookcrossing import db
 from bookcrossing.models.book import BookModel, BookSchema
 from bookcrossing.models.category import CategoryModel
 from bookcrossing.models.user import UserModel
-
-from flask import render_template, request, g, make_response
-from flask_login import current_user, login_required
 from bookcrossing.forms.book import AddBookForm, UpdateBookForm
-from flask_restful import Resource
-
-from bookcrossing.utils.book_utils import make_shelf, get_book_category, get_book_owner, book_formation, update_book, \
+from bookcrossing.resources.books.book_utils import make_shelf, get_book_category, get_book_owner, book_formation, update_book, \
     is_category_exist, create_book, get_book_by_id, delete_book_by_id
 
 
