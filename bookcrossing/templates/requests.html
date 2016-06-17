@@ -9,7 +9,8 @@ function accept_req(req_id) {
                url: uri,
                type: "PUT",
                success: function (data) {
-                    console.log(JSON.parse(data))
+                   console.log(JSON.parse(data))
+                   location.reload()
                },
                error: function (jqXHR, textStatus, errorThrown) {
                    console.log(jqXHR);

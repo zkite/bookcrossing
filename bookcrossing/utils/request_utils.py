@@ -121,21 +121,25 @@ def get_sent_book_requests(user_id: int) -> list:
 
 
 def get_requests_by_category(category, request_model, request_schema, book_model, user_object, user_model):
-    requests = None
-    requests = list()
-    request_list = None
-    if category == 'incoming':
-        request_list = request_model.query.filter_by(owner_user_id=user_object.id).all()
-    if category == 'outcoming':
-        request_list = request_model.query.filter_by(req_user_id=user_object.id).all()
+	requests = None
+	requests = list()
+	request_list = None
+	if category == 'incoming':
+		request_list = request_model.query.filter_by(owner_user_id=user_object.id).all()
+	if category == 'outcoming':
+		request_list = request_model.query.filter_by(req_user_id=user_object.id).all()
 
-    for req in request_list:
-        parsed_requests = request_schema().dump(req).data
-        parsed_requests['title'] = book_model.query.get(req.book_id).title
-        parsed_requests['request_date'] = req.request_date.strftime("%y-%m-%d-%H-%M")
-        parsed_requests['requester'] = user_model.query.get(req.req_user_id).login
-        parsed_requests['accepter'] = user_model.query.get(req.owner_user_id).login
-        print(parsed_requests)
-        requests.append(parsed_requests)
+	for req in request_list:
+		parsed_requests = request_schema().dump(req).data
+		parsed_requests['title'] = book_model.query.get(req.book_id).title
+		parsed_requests['request_date'] = req.request_date.strftime("%y-%m-%d-%H-%M")
+		if req.accept_date:
+			parsed_requests['accept_date'] = req.accept_date.strftime("%y-%m-%d-%H-%M")
+		else:
+			parsed_requests['accept_date'] = None
+		parsed_requests['requester'] = user_model.query.get(req.req_user_id).login
+		parsed_requests['accepter'] = user_model.query.get(req.owner_user_id).login
+		print(parsed_requests)
+		requests.append(parsed_requests)
 
-    return requests
+	return requests
