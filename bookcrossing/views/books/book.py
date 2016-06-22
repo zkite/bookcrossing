@@ -9,7 +9,7 @@ from bookcrossing.models.book import BookModel, BookSchema
 from bookcrossing.models.category import CategoryModel
 from bookcrossing.models.user import UserModel
 from bookcrossing.forms.book import AddBookForm, UpdateBookForm
-from bookcrossing.resources.books.book_utils import make_shelf, get_book_category, get_book_owner, book_formation, update_book, \
+from bookcrossing.views.books.book_utils import make_shelf, get_book_category, get_book_owner, book_formation, update_book, \
     is_category_exist, create_book, get_book_by_id, delete_book_by_id
 
 
