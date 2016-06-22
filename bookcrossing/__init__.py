@@ -37,7 +37,7 @@ from bookcrossing.views.index import Index
 from bookcrossing.views.search import Search
 from bookcrossing.views.books.book import BooksResource, BookProfileResource
 from bookcrossing.views.books.book import BooksResource, BookProfileResource
-from bookcrossing.views.requests import RequestsResource, RequestProfileResource
+#from bookcrossing.views.requests import RequestsResource, RequestProfileResource
 
 api.add_resource(Index, '/')
 # api.add_resource(Login, '/login')
@@ -46,8 +46,8 @@ api.add_resource(Index, '/')
 api.add_resource(Search, '/search')
 api.add_resource(BooksResource, '/books')
 api.add_resource(BookProfileResource, '/books/<int:id>')
-api.add_resource(RequestsResource, '/requests', '/requset/<int:req_id>', '/books/<int:book_id>/requests')
-api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req_id>')
+#api.add_resource(RequestsResource, '/requests', '/requset/<int:req_id>', '/books/<int:book_id>/requests')
+#api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req_id>')
 
 # Views(controllers) for user_resources ----------------
 from bookcrossing.views.user_resources import (index,
