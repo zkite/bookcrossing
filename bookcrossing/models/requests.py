@@ -3,7 +3,6 @@ from bookcrossing import db
 from marshmallow_sqlalchemy import ModelSchema
 
 
-
 class RequestModel(db.Model):
     __tablename__ = 'requests'
 
@@ -31,7 +30,8 @@ class RequestModel(db.Model):
                                                                                                    self.req_user_id,
                                                                                                    self.owner_user_id)
 
-#for serializing Book model
+
+# for serializing Book model
 class RequestSchema(ModelSchema):
-	class Meta:
-		model = RequestModel
+    class Meta:
+        model = RequestModel

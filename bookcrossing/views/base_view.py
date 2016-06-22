@@ -49,6 +49,8 @@ class BaseMethodView(MethodView):
                     return None
                 else:
                     m.k = data['k']
+
+            db.session.add(m)
             try:
                 db.session.commit()
             except(ProgrammingError, IntegrityError):

@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask
 from flask_testing import TestCase
 
@@ -25,6 +26,8 @@ class TestRequest(TestCase):
         test_user_1 = UserModel('test_user_1_login', 'test_user_1_password', 'test_user_1_email',
                                 'test_user_1_first_name', 'test_user_1_last_name', 'Dnepr-1', '1234567890')
         test_user_1.id = 11111
+        test_user_1.limit = 2
+        test_user_1.points = 1
 
         test_user_2 = UserModel('test_user_2_login', 'test_user_2_password', 'test_user_2_email',
                                 'test_user_2_first_name', 'test_user_2_last_name', 'Kiev-1', '0987654321')
@@ -65,9 +68,47 @@ class TestRequest(TestCase):
 
         self.assertEqual(book_request_test_2, None)
         self.assertEqual(requester.points, requester.limit)
-
+    '''
     def test_update_request(self):
-        pass
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        request = BaseRequestView()
+        data = {'book_id': book.id, 'req_user_id': requester.id, 'owner_user_id': book.user_id}
+        book_request_test_1 = request.create_request(uid=requester.id,
+                                                     request_data=data)
+        data = {'accept_date': datetime.now()}
+        book_request_test_2 = request.update_request(rid=book_request_test_1.id,
+                                                     request_data=data)
+
+        self.assertIn(book_request_test_2, db.session)
+
+        book_request = RequestModel.query.get(1)
+
+        self.assertEqual(book_request.accept_date, datetime.now())
+    '''
+
+    def test_delete_request(self):
+        """
+        Remove Request Object
+        Make Book visible
+        Change Book Owner
+        For Old Owner point--
+        """
+        request = BaseRequestView()
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        owner = UserModel.query.get(book.user_id)
+
+        data = {'book_id': book.id, 'req_user_id': requester.id, 'owner_user_id': book.user_id}
+        book_request_test_1 = request.create_request(uid=requester.id,
+                                                     request_data=data)
+
+        book_request_test_1 = request.delete_request(book_request_test_1.id)
+
+        self.assertEqual(book.user_id, requester.id)
+        self.assertNotEqual(book.user_id, owner.id)
+        self.assertEqual(owner.points, 0)
+        self.assertEqual(book.visible, True)
 
     def tearDown(self):
         db.session.remove()
