@@ -15,12 +15,13 @@ class RequestModel(db.Model):
     owner_user_id = db.Column('owner_user_id', db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, book_id, req_user_id, owner_user_id,
-                 request_date=datetime.datetime.now()):
+                 request_date=datetime.datetime.now(), accept_date=None):
         self.book_id = book_id
         self.req_user_id = req_user_id
         self.owner_user_id = owner_user_id
 
         self.request_date = request_date
+        self.accept_date = accept_date
 
     def __repr__(self):
         return "<ID: {0}, REQ_DATE: {1}, ACPT_DATE: {2}, BOOK: {3}, USER: {4}, OWNER: {5}>".format(self.id,

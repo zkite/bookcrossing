@@ -11,6 +11,9 @@ from bookcrossing.views.request.base_request import BaseRequestView
 
 
 class TestRequest(TestCase):
+
+    request = BaseRequestView()
+
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -45,11 +48,13 @@ class TestRequest(TestCase):
         db.session.add(test_book_1)
         db.session.commit()
 
-    def test_create_request(self):
+    def test_create_request(self,
+                            request=request):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
-        request = BaseRequestView()
-        data = {'book_id': book.id, 'req_user_id': requester.id, 'owner_user_id': book.user_id}
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
         book_request_test_1 = request.create_request(uid=requester.id,
                                                      request_data=data)
 
@@ -57,26 +62,31 @@ class TestRequest(TestCase):
 
         book_request = RequestModel.query.get(1)
 
+        self.assertNotEqual(book_request, None)
         self.assertEqual(book_request.book_id, 12345)
         self.assertEqual(book_request.req_user_id, 22222)
         self.assertEqual(book_request.owner_user_id, 11111)
         self.assertEqual(requester.limit, 2)
         self.assertEqual(requester.points, 2)
 
+        # can't create request because of user points check
         book_request_test_2 = request.create_request(uid=requester.id,
                                                      request_data=data)
 
         self.assertEqual(book_request_test_2, None)
         self.assertEqual(requester.points, requester.limit)
-    '''
-    def test_update_request(self):
+
+    def test_update_request(self,
+                            request=request):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
-        request = BaseRequestView()
-        data = {'book_id': book.id, 'req_user_id': requester.id, 'owner_user_id': book.user_id}
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
         book_request_test_1 = request.create_request(uid=requester.id,
                                                      request_data=data)
         data = {'accept_date': datetime.now()}
+        datetime_now = datetime.now()
         book_request_test_2 = request.update_request(rid=book_request_test_1.id,
                                                      request_data=data)
 
@@ -84,31 +94,41 @@ class TestRequest(TestCase):
 
         book_request = RequestModel.query.get(1)
 
-        self.assertEqual(book_request.accept_date, datetime.now())
-    '''
+        self.assertEqual(book_request.accept_date.strftime("%Y-%m-%d %H:%M"),
+                         datetime_now.strftime("%Y-%m-%d %H:%M"))
 
-    def test_delete_request(self):
-        """
-        Remove Request Object
-        Make Book visible
-        Change Book Owner
-        For Old Owner point--
-        """
-        request = BaseRequestView()
+    def test_delete_request(self,
+                            request=request):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
         owner = UserModel.query.get(book.user_id)
 
-        data = {'book_id': book.id, 'req_user_id': requester.id, 'owner_user_id': book.user_id}
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
         book_request_test_1 = request.create_request(uid=requester.id,
                                                      request_data=data)
 
         book_request_test_1 = request.delete_request(book_request_test_1.id)
 
+        self.assertNotEqual(book_request_test_1, None)
         self.assertEqual(book.user_id, requester.id)
         self.assertNotEqual(book.user_id, owner.id)
         self.assertEqual(owner.points, 0)
         self.assertEqual(book.visible, True)
+
+    def test_get_request(self,
+                         request=request):
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
+        book_request_test_1 = request.create_request(uid=requester.id,
+                                                     request_data=data)
+
+        request_test = request.get_request(book_request_test_1.id)
+        self.assertIn(request_test, db.session)
 
     def tearDown(self):
         db.session.remove()
