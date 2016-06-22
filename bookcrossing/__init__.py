@@ -24,6 +24,11 @@ bootstrap.init_app(app)
 
 api = Api(app)
 db = SQLAlchemy(app)
+
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+
 mail.init_app(app)
 
 login_manager = LoginManager()
@@ -66,3 +71,7 @@ app.add_url_rule('/logout', 'logout', logout)
 
 app.add_url_rule('/user_profile', 'user_profile', user_profile)
 app.add_url_rule('/edit_profile', 'edit_profile', edit_profile, methods=['GET', 'POST'])
+
+
+from bookcrossing.views.request import request
+app.add_url_rule(rule='/request/<int:request_id>', view_func=request.RequestView.as_view('request'))
