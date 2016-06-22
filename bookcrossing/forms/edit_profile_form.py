@@ -2,6 +2,7 @@ from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import InputRequired, Length, Regexp
 
+
 class EditProfileForm(Form):
 
     first_name = StringField('First Name', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])

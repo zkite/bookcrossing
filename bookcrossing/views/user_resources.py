@@ -14,11 +14,6 @@ def index():
     return render_template('index.html')
 
 
-def users():
-    users_list = UserModel.query.all()
-    return render_template('users.html', users=users_list)
-
-
 def registration():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -38,7 +33,7 @@ def registration():
                          'email/greeting',
                          user=user)
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('registration.html', form=form)
 
 
 def login():

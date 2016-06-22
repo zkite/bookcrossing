@@ -51,7 +51,6 @@ api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req
 
 # Views(controllers) for user_resources ----------------
 from bookcrossing.views.user_resources import (index,
-                                               users,
                                                registration,
                                                login,
                                                logout,
