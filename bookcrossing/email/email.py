@@ -1,6 +1,9 @@
 import threading
+
 from flask import copy_current_request_context, render_template
-from bookcrossing import mail, Message
+from flask_mail import Message
+
+from bookcrossing import mail
 
 
 def create_message(to, subject, template, **kwargs):

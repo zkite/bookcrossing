@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from bookcrossing import current_user
+from flask_login import current_user
 from bookcrossing import db
 from bookcrossing.models.requests import RequestModel, RequestSchema
 from bookcrossing.models.book import BookModel, BookSchema
