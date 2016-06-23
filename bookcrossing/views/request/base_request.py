@@ -139,3 +139,19 @@ class BaseRequestView(BaseMethodView):
         db.session.add(book)
         db.session.commit()
         return True
+
+    @staticmethod
+    def get_income_requests(user_id: int) -> list or None:
+        req_list = RequestModel.query.filter_by(owner_user_id=user_id).all()
+        if req_list:
+            return req_list
+        else:
+            return None
+
+    @staticmethod
+    def get_outcome_requests(user_id: int) -> list or None:
+        req_list = RequestModel.query.filter_by(req_user_id=user_id).all()
+        if req_list:
+            return req_list
+        else:
+            return None

@@ -74,4 +74,7 @@ app.add_url_rule('/edit_profile', 'edit_profile', edit_profile, methods=['GET', 
 
 
 from bookcrossing.views.request import request
-app.add_url_rule(rule='/request/<int:request_id>', view_func=request.RequestView.as_view('request'))
+app.add_url_rule(rule='/request/<int:request_id>', view_func=request.RequestView.as_view('request'),
+                 methods=['GET', 'PUT', 'DELETE'])
+app.add_url_rule(rule='/request/<int:book_id>', view_func=request.RequestView.as_view('create_request'),
+                 methods=['POST', ])
