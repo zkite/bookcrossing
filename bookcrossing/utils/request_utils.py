@@ -2,7 +2,7 @@ import uuid
 import datetime
 
 # from bookcrossing.mail.email import send_async_email
-from bookcrossing.models.user import UserModel
+from bookcrossing.models.user_model import UserModel
 from bookcrossing.models.requests import RequestModel
 from bookcrossing.models.book import BookModel
 

@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import InputRequired, Length, Email, Regexp, EqualTo
-from bookcrossing.models.user import UserModel
+from bookcrossing.models.user_model import UserModel
 
 
 class RegistrationForm(Form):
@@ -17,7 +17,7 @@ class RegistrationForm(Form):
 
     office = StringField('Office', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
 
-    phone = StringField('Phone', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    phone_number = StringField('Phone', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
 
     password = PasswordField('Password',
                              validators=[InputRequired(), EqualTo('confirm', message='Passwords must match.')])

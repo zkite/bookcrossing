@@ -6,7 +6,7 @@ from bookcrossing.forms.register_form import RegistrationForm
 from bookcrossing.forms.login_form import LoginForm
 from bookcrossing.forms.edit_profile_form import EditProfileForm
 
-from bookcrossing.models.user import UserModel
+from bookcrossing.models.user_model import UserModel
 from bookcrossing.email.email import send_async_email
 
 
@@ -22,7 +22,7 @@ def registration():
                          first_name=form.first_name.data,
                          last_name=form.last_name.data,
                          office=form.office.data,
-                         phone_number=form.phone.data,
+                         phone_number=form.phone_number.data,
                          password=form.password.data)
         db.session.add(user)
         db.session.commit()

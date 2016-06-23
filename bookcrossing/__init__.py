@@ -59,9 +59,9 @@ from bookcrossing.views.user_resources import (index,
                                                user_profile,
                                                edit_profile)
 
-from bookcrossing.views.users.user import UserView
+from bookcrossing.views.registration.registration import RegistrationView
 
-user_view = UserView.as_view('user_api')
+user_view = RegistrationView.as_view('user_api')
 app.add_url_rule('/registration/',  view_func=user_view, methods=['GET'])
 app.add_url_rule('/registration/',  view_func=user_view, methods=['POST'])
 

@@ -3,7 +3,7 @@ from flask_login import current_user
 from bookcrossing import db
 from bookcrossing.models.requests import RequestModel, RequestSchema
 from bookcrossing.models.book import BookModel, BookSchema
-from bookcrossing.models.user import UserModel
+from bookcrossing.models.user_model import UserModel
 from flask import render_template, request, make_response
 
 from bookcrossing.utils.request_utils import (create_book_request,
