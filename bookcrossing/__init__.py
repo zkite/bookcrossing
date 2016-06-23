@@ -1,5 +1,6 @@
 import os
 
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -7,6 +8,7 @@ from flask_restful import Api
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from bookcrossing.config import runtime_config
+
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -51,15 +53,21 @@ api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req
 
 # Views(controllers) for user_resources ----------------
 from bookcrossing.views.user_resources import (index,
-                                               registration,
+                                               # registration,
                                                login,
                                                logout,
                                                user_profile,
                                                edit_profile)
 
+from bookcrossing.views.users.user import UserView
+
+user_view = UserView.as_view('user_api')
+app.add_url_rule('/registration/',  view_func=user_view, methods=['GET'])
+app.add_url_rule('/registration/',  view_func=user_view, methods=['POST'])
+
 # app.add_url_rule('/', 'hello', index)
 # app.add_url_rule('/users', 'users', users)
-app.add_url_rule('/registration', 'registration', registration, methods=['GET', 'POST'])
+# app.add_url_rule('/registration', 'registration', registration, methods=['GET', 'POST'])
 app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
 app.add_url_rule('/logout', 'logout', logout)
 
