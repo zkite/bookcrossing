@@ -43,12 +43,12 @@ class BaseMethodView(MethodView):
         m = self.get_model(mid, model)
         if m and data:
             for k in data:
-                try:
-                    m.k
-                except AttributeError:
-                    return None
+                if hasattr(m, k):
+                    setattr(m, k, data[k])
                 else:
-                    m.k = data['k']
+                    return None
+
+            db.session.add(m)
             try:
                 db.session.commit()
             except(ProgrammingError, IntegrityError):

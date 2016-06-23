@@ -10,6 +10,7 @@ class BaseConfig(object):
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 
     # EMAIL SETTINGS

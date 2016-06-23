@@ -1,9 +1,15 @@
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                             '../..'))
+
 from flask_testing import TestCase
 from flask import Flask
 
 from bookcrossing import db
-from myconfig import TestingConfig
-from bookcrossing.models.models import User
+from bookcrossing.config import TestingConfig
+from bookcrossing.models.user import UserModel
 
 
 class TestDataBase(TestCase):
@@ -18,19 +24,19 @@ class TestDataBase(TestCase):
         return app
 
     def setUp(self):
-        test_user_1 = User('MayerLogin', 'Mayerpassword', 'mayer@gmail.com',
-                           'Mayer', 'Hawthorne', 'Dnepr_office', '12345678900')
+        test_user_1 = UserModel('MayerLogin', 'Mayerpassword', 'mayer@gmail.com',
+                                'Mayer', 'Hawthorne', 'Dnepr_office', '12345678900')
 
-        test_user_2 = User('JakeLogin', 'Jakepassword', 'jake@gmail.com',
-                           'Jake', 'Black', 'Lviv_office', '09876543211')
+        test_user_2 = UserModel('JakeLogin', 'Jakepassword', 'jake@gmail.com',
+                                'Jake', 'Black', 'Lviv_office', '09876543211')
 
         db.session.add(test_user_1)
         db.session.add(test_user_2)
         db.session.commit()
 
     def test_users(self):
-        user_1 = User.query.all()[0]
-        user_2 = User.query.all()[1]
+        user_1 = UserModel.query.get(1)
+        user_2 = UserModel.query.get(2)
 
         self.assertNotEqual(user_1.id, user_2.id)
         self.assertIn(user_1, db.session)
@@ -39,8 +45,6 @@ class TestDataBase(TestCase):
         self.assertEqual(user_2.login, 'JakeLogin')
         self.assertEqual(user_1.email, 'mayer@gmail.com')
         self.assertEqual(user_2.email, 'jake@gmail.com')
-        self.assertEqual(user_1.password, 'Mayerpassword')
-        self.assertEqual(user_2.password, 'Jakepassword')
 
     def tearDown(self):
         db.session.remove()
