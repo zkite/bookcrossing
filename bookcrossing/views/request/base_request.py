@@ -24,6 +24,8 @@ class BaseRequestView(BaseMethodView):
             return None
 
         if not self._increment_user_points(uid):
+            self.delete_model(request.id,
+                              RequestModel)
             return None
 
         return request
@@ -42,7 +44,8 @@ class BaseRequestView(BaseMethodView):
         if not self._make_book_invisible(request.book_id):
             return None
 
-        request = self.update_model(rid, RequestModel,
+        request = self.update_model(rid,
+                                    RequestModel,
                                     request_data)
         if not request:
             return None
@@ -83,10 +86,7 @@ class BaseRequestView(BaseMethodView):
                               UserModel)
         if not user:
             return False
-        if user.points < user.limit:
-            return True
-        else:
-            return False
+        return user.points < user.limit
 
     def _increment_user_points(self, uid: int) -> bool:
         user = self.get_model(uid,

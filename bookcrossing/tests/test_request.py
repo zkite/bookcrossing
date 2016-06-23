@@ -50,8 +50,10 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.commit()
 
     def test_create_request(self):
-        book = self.get_model(12345, BookModel)
-        requester = self.get_model(22222, UserModel)
+        book = self.get_model(12345,
+                              BookModel)
+        requester = self.get_model(22222,
+                                   UserModel)
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
@@ -60,7 +62,7 @@ class TestRequest(TestCase, BaseRequestView):
 
         self.assertIn(book_request_test_1, db.session)
 
-        book_request = self.get_request(1)
+        book_request = self.get_request(book_request_test_1.id)
 
         self.assertNotEqual(book_request, None)
         self.assertEqual(book_request.book_id, 12345)
@@ -72,28 +74,28 @@ class TestRequest(TestCase, BaseRequestView):
         # can't create request because of user points check
         book_request_test_2 = self.create_request(uid=requester.id,
                                                   request_data=data)
-
         self.assertEqual(book_request_test_2, None)
         self.assertEqual(requester.points, requester.limit)
 
     def test_update_request(self):
-        book = self.get_model(12345, BookModel)
-        requester = self.get_model(22222, UserModel)
+        book = self.get_model(12345,
+                              BookModel)
+        requester = self.get_model(22222,
+                                   UserModel)
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
         book_request_test_1 = self.create_request(uid=requester.id,
                                                   request_data=data)
+
         data = {'accept_date': datetime.now()}
         datetime_now = datetime.now()
-        book_request_test_2 = self.update_request(rid=book_request_test_1.id,
+        book_request_test_1 = self.update_request(rid=book_request_test_1.id,
                                                   request_data=data)
 
-        self.assertIn(book_request_test_2, db.session)
-
-        book_request = self.get_request(1)
-
-        self.assertEqual(book_request.accept_date.strftime("%Y-%m-%d %H:%M"),
+        self.assertNotEqual(book_request_test_1, None)
+        self.assertIn(book_request_test_1, db.session)
+        self.assertEqual(book_request_test_1.accept_date.strftime("%Y-%m-%d %H:%M"),
                          datetime_now.strftime("%Y-%m-%d %H:%M"))
 
     def test_delete_request(self):
@@ -106,7 +108,6 @@ class TestRequest(TestCase, BaseRequestView):
                 'owner_user_id': book.user_id}
         book_request_test_1 = self.create_request(uid=requester.id,
                                                   request_data=data)
-
         book_request_test_1 = self.delete_request(book_request_test_1.id)
 
         self.assertNotEqual(book_request_test_1, None)

@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                             '../..'))
+
 from flask_testing import TestCase
 from flask import Flask
 
@@ -19,10 +25,10 @@ class TestDataBase(TestCase):
 
     def setUp(self):
         test_user_1 = UserModel('MayerLogin', 'Mayerpassword', 'mayer@gmail.com',
-                           'Mayer', 'Hawthorne', 'Dnepr_office', '12345678900')
+                                'Mayer', 'Hawthorne', 'Dnepr_office', '12345678900')
 
         test_user_2 = UserModel('JakeLogin', 'Jakepassword', 'jake@gmail.com',
-                           'Jake', 'Black', 'Lviv_office', '09876543211')
+                                'Jake', 'Black', 'Lviv_office', '09876543211')
 
         db.session.add(test_user_1)
         db.session.add(test_user_2)
