@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bookcrossing import db
 from bookcrossing import login_manager
 
+from bookcrossing.models.requests import RequestModel
 
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -22,6 +23,9 @@ class UserModel(UserMixin, db.Model):
 
     limit = db.Column('limit', db.Integer, default=0)
     points = db.Column('points', db.Integer, default=0)
+
+    in_requests = db.relationship("RequestModel", backref='owner_user', foreign_keys='RequestModel.owner_user_id')
+    out_requests = db.relationship("RequestModel", backref='req_user', foreign_keys='RequestModel.req_user_id')
 
     # office_id = db.Column('office_id', db.Integer, db.ForeignKey('offices.id'))
 

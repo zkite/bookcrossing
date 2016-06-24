@@ -12,9 +12,9 @@ function IsJson(str) {
     return true;
 }
 
-// /books/<int:book_id>/requests'
+// /request/book-id/<int:book_id>
 function request_book(book_id) {
-        var uri = "/books/" + book_id + "/requests"
+        var uri = "/request/book-id/" + book_id
         $.ajax({
                    url: uri,
                    type: "POST",

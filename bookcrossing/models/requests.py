@@ -2,6 +2,7 @@ import datetime
 from bookcrossing import db
 from marshmallow_sqlalchemy import ModelSchema
 
+from bookcrossing.models.book import BookModel
 
 class RequestModel(db.Model):
     __tablename__ = 'requests'
@@ -13,6 +14,8 @@ class RequestModel(db.Model):
     book_id = db.Column('book_id', db.Integer, db.ForeignKey('books.id'))
     req_user_id = db.Column('req_user_id', db.Integer, db.ForeignKey('users.id'))
     owner_user_id = db.Column('owner_user_id', db.Integer, db.ForeignKey('users.id'))
+
+    book = db.relationship("BookModel", backref='request')
 
     def __init__(self, book_id, req_user_id, owner_user_id,
                  request_date=datetime.datetime.now(), accept_date=None):
