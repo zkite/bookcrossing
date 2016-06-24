@@ -6,28 +6,7 @@ import logging.handlers
 from bookcrossing.views.request.base_request import BaseRequestView
 from bookcrossing.models.book import BookModel
 
-###############################################
-####           LOGGING SETTINGS            ####
-###############################################
-
-f = logging.Formatter(fmt='%(levelname)s:%(name)s: %(message)s '
-    '(%(asctime)s; %(filename)s:%(lineno)d)',
-    datefmt="%Y-%m-%d %H:%M:%S")
-handlers = [
-    logging.handlers.RotatingFileHandler('rotated.log', encoding='utf8',
-        maxBytes=100000, backupCount=1),
-    logging.StreamHandler()
-]
-root_logger = logging.getLogger()
-root_logger.setLevel(logging.DEBUG)
-for h in handlers:
-    h.setFormatter(f)
-    h.setLevel(logging.DEBUG)
-    root_logger.addHandler(h)
-
-###############################################
-####         END LOGGING SETTINGS          ####
-###############################################
+logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 
 class RequestView(BaseRequestView):
     def get(self, request_id=None):
@@ -38,7 +17,7 @@ class RequestView(BaseRequestView):
         if not request_obj:
             logging.error('RequestView GET request_id ERROR')
             return 'RequestView GET request_obj ERROR'
-        logging.error('RequestView GET request_obj OK')
+        logging.info('RequestView GET request_obj OK')
         return 'RequestView GET request_obj OK'
 
     def post(self, book_id=None):
