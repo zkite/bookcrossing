@@ -4,31 +4,32 @@
 {% block page_content %}
     <div class="page-header">
         <h1>This is your profile, {{ current_user.login }}</h1>
+        <a class="btn btn-default" href="/users_list"> Users List</a>
     </div>
 
 <div style="font-size:20px">
     <div class="row">
         <p>
         <div class="col-md-2"><b>Login:</b></div>
-        <div id="book-title" class="col-md-5">{{ current_user.login|e }}</div>
+        <div id="user-login" class="col-md-5">{{ current_user.login|e }}</div>
         </p>
     </div>
     <div class="row">
         <p>
         <div class="col-md-2"><b>Email:</b></div>
-        <div id="book-author" class="col-md-5">{{ current_user.email|e }}</div>
+        <div id="user-email" class="col-md-5">{{ current_user.email|e }}</div>
         </p>
     </div>
     <div class="row">
         <p>
         <div class="col-md-2"><b>First Name:</b></div>
-        <div id="book-publisher" class="col-md-5">{{ current_user.first_name|e }}</div>
+        <div id="user-first_name" class="col-md-5">{{ current_user.first_name|e }}</div>
         </p>
     </div>
     <div class="row">
         <p>
         <div class="col-md-2"><b>Last Name:</b></div>
-        <div id="book-category" class="col-md-5">{{ current_user.last_name|e }}</div>
+        <div id="user-last_name" class="col-md-5">{{ current_user.last_name|e }}</div>
         </p>
     </div>
     <div class="row">
@@ -48,7 +49,10 @@
 
 <div>
     <br />
-    <a class="btn btn-default" href="{{ url_for('edit_profile') }}" style="margin-left: -2px"> Edit Profile</a>
+    <form method="post" action="/edit_profile/">
+        <button class="btn btn-default" type="submit">Edit Profile</button>
+    </form>
+
 </div>
 
 {% endblock %}

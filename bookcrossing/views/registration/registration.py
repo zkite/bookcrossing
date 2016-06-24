@@ -28,7 +28,7 @@ class RegistrationView(BaseRegistrationView):
                              'email/greeting',
                              first_name=form.first_name.data)
 
-            return redirect(url_for('login'))
+            return redirect('/login')
         return render_template('registration.html', form=form)
 
     def put(self):
