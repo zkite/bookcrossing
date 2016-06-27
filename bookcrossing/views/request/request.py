@@ -1,11 +1,13 @@
 from datetime import datetime
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from bookcrossing.views.request.base_request import BaseRequestView
 from bookcrossing.models.book import BookModel
 
 
 class RequestView(BaseRequestView):
+
+    @login_required
     def get(self, request_id=None):
         if not request_id:
             return 'RequestView GET request_id ERROR'
@@ -14,6 +16,7 @@ class RequestView(BaseRequestView):
             return 'RequestView GET request_obj ERROR'
         return 'RequestView GET request_obj OK'
 
+    @login_required
     def post(self, book_id=None):
         if not book_id:
             return 'RequestView POST book_id ERROR'
@@ -32,6 +35,7 @@ class RequestView(BaseRequestView):
             return 'RequestView POST book_request ERROR'
         return 'RequestView POST book_request OK'
 
+    @login_required
     def put(self, request_id=None):
         if not request_id:
             return 'RequestView PUT request_id ERROR'
@@ -42,6 +46,7 @@ class RequestView(BaseRequestView):
             return 'RequestView PUT update_request ERROR'
         return 'RequestView PUT update_request OK'
 
+    @login_required
     def delete(self, request_id=None):
         if not request_id:
             return 'RequestView DELETE request_id ERROR'
