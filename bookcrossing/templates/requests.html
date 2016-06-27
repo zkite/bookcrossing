@@ -26,7 +26,7 @@ function delete_req(request_id) {
                url: uri,
                type: "DELETE",
                success: function (data) {
-                   //console.log(JSON.parse(data));
+                   console.log(JSON.parse(data));
                    location.reload()
                },
                error: function (jqXHR, textStatus, errorThrown) {

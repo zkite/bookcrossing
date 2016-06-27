@@ -1,3 +1,4 @@
+from bookcrossing.models.request_history import RequestHistoryModel
 from bookcrossing.views.base_view import BaseMethodView
 from bookcrossing.models.requests import RequestModel
 from bookcrossing.models.user import UserModel
@@ -139,6 +140,16 @@ class BaseRequestView(BaseMethodView):
         db.session.add(book)
         db.session.commit()
         return True
+
+    def _create_request_history(self, req_id):
+        req = RequestModel.query.get(req_id)
+        print(req.book_id)
+        return self.create_model(RequestHistoryModel,
+                                 book_id=req.book_id,
+                                 req_user_id=req.req_user_id,
+                                 owner_user_id=req.owner_user_id,
+                                 request_date=req.request_date,
+                                 accept_date=req.accept_date)
 
     @staticmethod
     def get_income_requests(user_id: int) -> list or None:

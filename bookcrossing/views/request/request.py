@@ -1,12 +1,11 @@
 from datetime import datetime
 from flask import request, render_template
 from flask_login import current_user, login_required
+from bookcrossing.models.requests import RequestModel, RequestSchema
+from bookcrossing.models.user import UserModel
 
 from bookcrossing.views.request.base_request import BaseRequestView
-
-from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
-from bookcrossing.models.requests import RequestModel, RequestSchema
 
 
 def get_requests_by_category(category):
@@ -46,13 +45,14 @@ class RequestView(BaseRequestView):
                                user=current_user)
 
     @login_required
-    def post(self, book_id):
+    def post(self, book_id=None):
         if not book_id:
             return 'RequestView POST book_id ERROR'
         if not current_user:
             return 'RequestView POST current_user ERROR'
         book = self.get_model(book_id,
                               BookModel)
+        print(book_id)
         if not book:
             return 'RequestView POST Book ERROR'
         data = {'book_id': book.id,
@@ -60,6 +60,9 @@ class RequestView(BaseRequestView):
                 'owner_user_id': book.user_id}
         book_request = self.create_request(request_data=data,
                                            uid=current_user.id)
+        print(book_request)
+        from bookcrossing.models.requests import RequestModel
+        print(RequestModel.query.all())
         if not book_request:
             return 'RequestView POST book_request ERROR'
         return 'RequestView POST book_request OK'
@@ -79,7 +82,9 @@ class RequestView(BaseRequestView):
     def delete(self, request_id=None):
         if not request_id:
             return 'RequestView DELETE request_id ERROR'
+        history_request = self._create_request_history(request_id)
         delete_request = self.delete_request(rid=request_id)
+        print(history_request)
         if not delete_request:
             return 'RequestView DELETE delete_request ERROR'
         return 'RequestView DELETE delete_request OK'

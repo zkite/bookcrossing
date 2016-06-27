@@ -48,6 +48,9 @@ from bookcrossing.views.user_resources import (index,
                                                user_profile,
                                                edit_profile)
 
+from bookcrossing.views.request_history.request_history import RequestHistoryView
+
+
 api.add_resource(Index, '/')
 
 
@@ -76,3 +79,7 @@ app.add_url_rule(rule='/books/<int:book_id>/requests', view_func=request_view,
                  methods=['POST'])
 app.add_url_rule(rule='/requests', view_func=request_view,
                  methods=['GET'])  # lists of income and outcome requests
+
+
+req_history_view = RequestHistoryView.as_view("req_history_view")
+app.add_url_rule(rule="/requests/history", view_func=req_history_view, methods=['GET'])
