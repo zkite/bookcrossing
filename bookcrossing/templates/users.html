@@ -2,19 +2,15 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
-<h1>Already registered users:</h1>
-<ul>
+<h1 class="page-header">Already registered users:</h1>
     {% for user in users %}
-    <div class="panel panel-default">
-        <div class="panel-body">
-            Login - {{ user.login|e }}<br>
-            email - {{ user.email|e }}<br>
-            First Name - {{ user.first_name|e }}<br>
-            Last Name - {{ user.last_name|e }}<br>
-            Office - {{ user.office|e }}<br>
-            Phone - {{ user.phone_number|e }}<br>
-        </div>
-    </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <a href="/profile/{{user.id}}" class="panel-title">Login - {{ user.login }}</a>
+                </div>
+                <div class="panel-body">
+                    email - {{ user.email|e }}<br>
+                </div>
+            </div>
     {% endfor %}
-</ul>
 {% endblock %}

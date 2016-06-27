@@ -11,7 +11,7 @@ class BookModel(db.Model):
 	visible = db.Column('visible', db.Boolean, default=True)
 
 	category_id = db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
-	user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+	user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 
 	def __init__(self, title, author, publisher):
 		self.title = title

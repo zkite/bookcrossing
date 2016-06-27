@@ -29,7 +29,8 @@ mail.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.session_protection = 'strong'
+login_manager.login_view = '/login/'
 
 from bookcrossing.views.index import Index
 from bookcrossing.views.search import Search
@@ -45,27 +46,33 @@ api.add_resource(RequestsResource, '/requests', '/requset/<int:req_id>', '/books
 api.add_resource(RequestProfileResource, '/books/<int:book_id>/requests/<int:req_id>')
 
 
-# Views(controllers) for user_resources ----------------
+# Views(controllers) for user ----------------
 
-from bookcrossing.views.registration.registration import RegistrationView
+from bookcrossing.views.user.user import (
+    RegistrationView,
+    LoginView,
+    LogoutView,
+    UsersListView,
+    UserProfileView,
+    EditUserProfileView
+)
+
+
 user_reg = RegistrationView.as_view('user_reg')
-app.add_url_rule('/registration/',  view_func=user_reg, methods=['GET'])
-app.add_url_rule('/registration/',  view_func=user_reg, methods=['POST'])
+app.add_url_rule('/registration/',  view_func=user_reg, methods=['GET', 'POST'])
 
-from bookcrossing.views.login.login import LoginView
 user_login = LoginView.as_view('user_login')
-app.add_url_rule('/login/',  view_func=user_login, methods=['GET'])
-app.add_url_rule('/login/',  view_func=user_login, methods=['POST'])
+app.add_url_rule('/login/',  view_func=user_login, methods=['GET', 'POST'])
 
-from bookcrossing.views.logout.logout import LogoutView
 user_logout = LogoutView.as_view('user_logout')
 app.add_url_rule('/logout/',  view_func=user_logout, methods=['GET'])
 
-from bookcrossing.views.user_profile.user_profile import UserProfileView
-us_profile = UserProfileView.as_view('us_profile')
-app.add_url_rule('/user_profile/',  view_func=us_profile, methods=['GET'])
-app.add_url_rule('/edit_profile/',  view_func=us_profile, methods=['POST'])
-
-from bookcrossing.views.users_list.users_list import UsersListView
 users_list = UsersListView.as_view('users_list')
-app.add_url_rule('/users_list/',  view_func=users_list, methods=['GET'])
+app.add_url_rule('/users/',  view_func=users_list, methods=['GET'])
+
+user_profile = UserProfileView.as_view('user_info')
+app.add_url_rule('/profile/', view_func=user_profile, methods=['GET'])
+app.add_url_rule('/profile/<int:user_id>', view_func=user_profile, methods=['GET'])
+
+edit_profile = EditUserProfileView.as_view('us_profile')
+app.add_url_rule('/edit/',  view_func=edit_profile, methods=['GET', 'POST'])

@@ -12,8 +12,8 @@ class RequestModel(db.Model):
     accept_date = db.Column('accept_date', db.DateTime, default=None)
     notification_counter = db.Column('notification_counter', db.Integer, default=0)
     book_id = db.Column('book_id', db.Integer, db.ForeignKey('books.id'))
-    req_user_id = db.Column('req_user_id', db.Integer, db.ForeignKey('users.id'))
-    owner_user_id = db.Column('owner_user_id', db.Integer, db.ForeignKey('users.id'))
+    req_user_id = db.Column('req_user_id', db.Integer, db.ForeignKey('user.id'))
+    owner_user_id = db.Column('owner_user_id', db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, book_id, req_user_id, owner_user_id,
                  request_date=datetime.datetime.now()):
