@@ -56,39 +56,46 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.add(test_book_1)
         db.session.commit()
 
-    def test_create_request(self):
+    def test_check_user_points(self):
+        res = self._check_user_points(11111)
+
+        self.assertEqual(res, True)
+
+    def test_increment_user_points(self):
+        res = self._increment_user_points(11111)
+
+        self.assertEqual(res, True)
+
+    def test_decrement_user_points(self):
+        res = self._decrement_user_points(11111)
+
+        self.assertEqual(res, True)
+
+    def test_make_book_visible(self):
+        book = BookModel.query.get(12345)
+        book.visible = False
+
+        self._make_book_visible(bid=book.id)
+
+        self.assertEqual(book.visible, True)
+
+    def test_make_book_invisible(self):
+        book = BookModel.query.get(12345)
+        book.visible = True
+
+        self._make_book_invisible(bid=book.id)
+
+        self.assertEqual(book.visible, False)
+
+    def test_change_book_owner(self):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
 
-        data = {'book_id': book.id,
-                'req_user_id': requester.id,
-                'owner_user_id': book.user_id}
-        book_request_test_1 = self.create_request(uid=requester.id,
-                                                  request_data=data)
+        res = self._change_book_owner(bid=book.id,
+                                      rid=requester.id)
 
-        self.assertNotEqual(book_request_test_1, None)
-        self.assertIn(book_request_test_1, db.session)
-        self.assertNotEqual(book_request_test_1, None)
-        self.assertEqual(book_request_test_1.book_id, 12345)
-        self.assertEqual(book_request_test_1.req_user_id, 22222)
-        self.assertEqual(book_request_test_1.owner_user_id, 11111)
-        self.assertEqual(requester.limit, 2)
-        self.assertEqual(requester.points, 2)
-
-    def test_create_request_points_fail(self):
-        # can't create request because of user points check
-        book = BookModel.query.get(12345)
-        requester = UserModel.query.get(22222)
-        requester.limit = 1
-
-        data = {'book_id': book.id,
-                'req_user_id': requester.id,
-                'owner_user_id': book.user_id}
-        book_request_test_2 = self.create_request(uid=requester.id,
-                                                  request_data=data)
-
-        self.assertEqual(book_request_test_2, None)
-        self.assertEqual(requester.points, requester.limit)
+        self.assertEqual(res, True)
+        self.assertEqual(book.user_id, requester.id)
 
     def tearDown(self):
         db.session.remove()
