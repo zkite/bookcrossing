@@ -29,12 +29,13 @@ class TestDataBase(TestCase):
                                 last_name='Hawthorne',
                                 office='Dnepr_office',
                                 phone_number='12345678900')
+        test_user_1.id = 11111
 
         db.session.add(test_user_1)
         db.session.commit()
 
     def test_user(self):
-        user_1 = UserModel.query.get(1)
+        user_1 = UserModel.query.get(11111)
 
         self.assertIn(user_1, db.session)
         self.assertEqual(user_1.login, 'MayerLogin')
