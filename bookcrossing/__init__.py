@@ -36,21 +36,9 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 from bookcrossing.views.index import Index
-# from bookcrossing.views.login import Login
-# from bookcrossing.views.register import Register
-# from bookcrossing.views.logout import Logout
-from bookcrossing.views.search import Search
-from bookcrossing.views.books.book import BooksResource, BookProfileResource
-from bookcrossing.views.books.book import BooksResource, BookProfileResource
+from bookcrossing.views.search.book_search import BookSearchView
+from bookcrossing.views.books.book import BooksView, BookProfileView
 from bookcrossing.views.request.request import RequestView
-
-api.add_resource(Index, '/')
-# api.add_resource(Login, '/login')
-# api.add_resource(Register, '/register')
-# api.add_resource(Logout, '/logout')
-api.add_resource(Search, '/search')
-api.add_resource(BooksResource, '/books')
-api.add_resource(BookProfileResource, '/books/<int:id>')
 
 # Views(controllers) for user_resources ----------------
 from bookcrossing.views.user_resources import (index,
@@ -60,8 +48,19 @@ from bookcrossing.views.user_resources import (index,
                                                user_profile,
                                                edit_profile)
 
-# app.add_url_rule('/', 'hello', index)
-# app.add_url_rule('/users', 'users', users)
+api.add_resource(Index, '/')
+
+
+book_view = BooksView.as_view('book_view')
+app.add_url_rule('/books', view_func=book_view, methods=['POST','GET', 'PUT', 'DELETE'])
+
+book_profile_view = BookProfileView.as_view('book_profile_view')
+app.add_url_rule('/books/<int:book_id>', view_func=book_profile_view, methods=['GET'])
+
+search_view = BookSearchView.as_view('search_view')
+app.add_url_rule('/search', view_func=search_view, methods=['POST','GET'])
+
+
 app.add_url_rule('/registration', 'registration', registration, methods=['GET', 'POST'])
 app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
 app.add_url_rule('/logout', 'logout', logout)

@@ -42,13 +42,13 @@ class BaseMethodView(MethodView):
     def update_model(self, mid: int, model: Model, data: dict) -> Model or None:
         m = self.get_model(mid, model)
         if m and data:
-            for k in data:
-                if hasattr(m, k):
-                    setattr(m, k, data[k])
-                else:
+            for k, v in data.items():
+                try:
+                    hasattr(m, k)
+                except AttributeError:
                     return None
-
-            db.session.add(m)
+                else:
+                    setattr(m, k, v)
             try:
                 db.session.commit()
             except(ProgrammingError, IntegrityError):

@@ -28,7 +28,7 @@ function save_book() {
 
     // ajax adding data to database
     $.ajax({
-               url: '{{ url_for("booksresource") }}',
+               url: '{{ url_for("book_view") }}',
                type: "POST",
                data: $('#form').serialize(),
                success: function (data) {
@@ -81,7 +81,7 @@ function delete_book(id) {
     book['id'] = id;
 
     $.ajax({
-               url: "{{ url_for('booksresource') }}",
+               url: "{{ url_for('book_view') }}",
                data: JSON.stringify(book),
                type: "DELETE",
                contentType: "application/json",
@@ -133,7 +133,7 @@ function update_book() {
     //console.log($('#form').serialize());
 
     $.ajax({
-               url: '{{ url_for("booksresource") }}',
+               url: '{{ url_for("book_view") }}',
                type: "PUT",
                data: $('#form').serialize(),
                success: function (data) {
