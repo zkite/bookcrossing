@@ -1,0 +1,43 @@
+[
+  {
+    "table": "users",
+    "records": [
+      {
+        "login": "test_user_1_login",
+        "password": "test_user_1_password",
+        "email": "test_user_1_email",
+        "first_name": "test_user_1_first_name",
+        "last_name": "test_user_1_last_name",
+        "office": "Dnepr-1",
+        "phone_number": "1234567890",
+        "id": 11111,
+        "limit": 2,
+        "points": 1
+      },
+      {
+        "login": "test_user_2_login",
+        "password": "test_user_2_password",
+        "email": "test_user_2_email",
+        "first_name": "test_user_2_first_name",
+        "last_name": "test_user_2_last_name",
+        "office": "Kiev-1",
+        "phone_number": "0987654321",
+        "id": 22222,
+        "limit": 2,
+        "points": 1
+      }
+    ]
+  },
+  {
+    "model": "bookcrossing.models.book.BookModel",
+    "records": [
+      {
+        "id": 12345,
+        "title": "test_book_1_title",
+        "user_id": 11111,
+        "author": "test_book_1_author",
+        "publisher": "test_book_1_publisher"
+      }
+    ]
+  }
+]
