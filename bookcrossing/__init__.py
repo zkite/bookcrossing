@@ -43,6 +43,7 @@ from bookcrossing.views.search import Search
 from bookcrossing.views.books.book import BooksResource, BookProfileResource
 from bookcrossing.views.books.book import BooksResource, BookProfileResource
 from bookcrossing.views.request.request import RequestView
+from bookcrossing.views.request_history.request_history import RequestHistoryView
 
 api.add_resource(Index, '/')
 # api.add_resource(Login, '/login')
@@ -75,3 +76,7 @@ app.add_url_rule(rule='/request/req-id/<int:request_id>', view_func=request_view
                  methods=['GET', 'PUT', 'DELETE'])
 app.add_url_rule(rule='/request/book-id/<int:book_id>', view_func=request_view,
                  methods=['POST'])
+
+request_history_view = RequestHistoryView.as_view('request_history')
+app.add_url_rule(rule='/request_history', view_func=request_history_view,
+                 methods=['GET'])

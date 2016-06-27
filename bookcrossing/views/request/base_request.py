@@ -1,5 +1,6 @@
 from bookcrossing.views.base_view import BaseMethodView
 from bookcrossing.models.requests import RequestModel
+from bookcrossing.models.request_history import RequestHistoryModel
 from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
 from bookcrossing import db
@@ -55,6 +56,7 @@ class BaseRequestView(BaseMethodView):
     def delete_request(self, rid: int) -> object or None:
         """
         Remove Request Object
+        Create Request History
         Make Book visible
         Change Book Owner
         For Old Owner point--
@@ -63,6 +65,9 @@ class BaseRequestView(BaseMethodView):
         rem_request = self.delete_model(rid,
                                         RequestModel)
         if not rem_request:
+            return None
+
+        if not self._create_request_history(rem_request):
             return None
 
         if not self._make_book_visible(rem_request.book_id):
@@ -139,6 +144,14 @@ class BaseRequestView(BaseMethodView):
         db.session.add(book)
         db.session.commit()
         return True
+
+    def _create_request_history(self, req):
+        return self.create_model(RequestHistoryModel,
+                                 book_id=req.book_id,
+                                 req_user_id=req.req_user_id,
+                                 owner_user_id=req.owner_user_id,
+                                 request_date=req.request_date,
+                                 accept_date=req.accept_date)
 
     @staticmethod
     def get_income_requests(user_id: int) -> list or None:

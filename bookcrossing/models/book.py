@@ -1,5 +1,6 @@
 from bookcrossing import db
 from marshmallow_sqlalchemy import ModelSchema
+from bookcrossing.models.category import CategoryModel
 
 class BookModel(db.Model):
 	__tablename__ = 'books'
@@ -12,6 +13,8 @@ class BookModel(db.Model):
 
 	category_id = db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
 	user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+
+	category = db.relationship("CategoryModel")
 
 	def __init__(self, title, author, publisher):
 		self.title = title
