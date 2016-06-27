@@ -6,7 +6,7 @@ from bookcrossing import login_manager
 
 
 class UserModel(UserMixin, db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     id = db.Column('id', db.Integer, primary_key=True, unique=True, autoincrement=True)
 
