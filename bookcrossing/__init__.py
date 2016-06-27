@@ -70,7 +70,9 @@ app.add_url_rule('/edit_profile', 'edit_profile', edit_profile, methods=['GET', 
 
 
 request_view = RequestView.as_view('request')
-app.add_url_rule(rule='/request/req-id/<int:request_id>', view_func=request_view,
-                 methods=['GET', 'PUT', 'DELETE'])
-app.add_url_rule(rule='/request/book-id/<int:book_id>', view_func=request_view,
+app.add_url_rule(rule='/requests/<int:request_id>', view_func=request_view,
+                 methods=['PUT', 'DELETE'])
+app.add_url_rule(rule='/books/<int:book_id>/requests', view_func=request_view,
                  methods=['POST'])
+app.add_url_rule(rule='/requests', view_func=request_view,
+                 methods=['GET'])  # lists of income and outcome requests

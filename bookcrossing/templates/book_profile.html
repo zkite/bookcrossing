@@ -14,7 +14,7 @@ function IsJson(str) {
 
 // /books/<int:book_id>/requests'
 function request_book(book_id) {
-        var uri = "/books/" + book_id + "/requests"
+        var uri = "/books/" + book_id + "/requests";
         $.ajax({
                    url: uri,
                    type: "POST",
