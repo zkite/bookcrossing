@@ -5,34 +5,156 @@
 <h2>Requests history</h2>
 <hr/>
 <div class="row">
-        <div class="col-md-12">
-            {% if request_details %}
-                <table class="table table-hover" style="margin-top:-11px">
-                    <thead>
-                        <tr>
-                            <th>Book title</th>
-                            <th>Requester</th>
-                            <th>Owner</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for request in request_details %}
-                            <tr>
-                                <td class="col-md-3" id="book-title">{{ request['book_title'] }}</td>
-                                <td class="col-md-3" id="book-requester">{{ request['req_user_login'] }}</td>
-                                <td class="col-md-3" id="book-owner">{{ request['owner_user_login'] }}</td>
-                                <td class="col-md-3">
-                                    <a href="/request_history/{{request.id}}" class="btn btn-info">Show details</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <h3>No history yet</h3>
-            {% endif %}
-        </div>
+    <div class="col-md-12">
+        <!--<th>Book title</th>-->
+        <!--<th>Requester</th>-->
+        <!--<th>Owner</th>-->
+
+        {% if request_details %}
+            <div class="row">
+                <h3>
+                    <div class="col-md-4">Book title</div>
+                    <div class="col-md-4">Requester</div>
+                    <div class="col-md-4">Owner</div>
+                </h3>
+            </div>
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top: 20px;">
+                {% for request in request_details %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="heading_{{request.id}}" data-toggle="collapse"
+                         data-parent="#accordion"
+                         data-target="#{{request.id}}" aria-expanded="true" aria-controls="{{request.id}}">
+                        <h4 class="panel-title">
+                            <div class="row">
+                                <div class="col-md-4">{{ request['book_title'] }}</div>
+                                <div class="col-md-4">{{ request['req_user_login'] }}</div>
+                                <div class="col-md-4">{{ request['owner_user_login'] }}</div>
+                            </div>
+                        </h4>
+                    </div>
+                    <div id="{{request.id}}" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="heading_{{request.id}}">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="font-size:20px">
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Title:</b></div>
+                                            <div id="book-title" class="col-md-6">{{ request.book_title }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Author:</b></div>
+                                            <div id="book-author" class="col-md-6">{{ request.book_author }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Publisher:</b></div>
+                                            <div id="book-publisher" class="col-md-6">{{ request.book_publisher }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Category:</b></div>
+                                            <div id="book-category" class="col-md-6">{{ request.book_category }}</div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="font-size:20px">
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Login:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_login }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Email:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_email }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>First Name:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_first_name }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Last Name:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_last_name }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Office:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_office }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Phone:</b></div>
+                                            <div class="col-md-6">{{ request.req_user_phone_number }}</div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="font-size:20px">
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Login:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_login }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Email:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_email }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>First Name:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_first_name }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Last Name:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_last_name }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Office:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_office }}</div>
+                                            </p>
+                                        </div>
+                                        <div class="row">
+                                            <p>
+                                            <div class="col-md-6"><b>Phone:</b></div>
+                                            <div class="col-md-6">{{ request.owner_user_phone_number }}</div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>No history yet</h3>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}
