@@ -38,7 +38,7 @@ login_manager.login_view = 'login'
 from bookcrossing.views.index import Index
 from bookcrossing.views.search.book_search import BookSearchView
 from bookcrossing.views.books.book import BooksView, BookProfileView
-from bookcrossing.views.request.request import RequestView
+from bookcrossing.views.request.request import RequestView, DeclineRequestView
 
 # Views(controllers) for user_resources ----------------
 from bookcrossing.views.user_resources import (index,
@@ -79,6 +79,10 @@ app.add_url_rule(rule='/books/<int:book_id>/requests', view_func=request_view,
                  methods=['POST'])
 app.add_url_rule(rule='/requests', view_func=request_view,
                  methods=['GET'])  # lists of income and outcome requests
+
+decline_request_view = DeclineRequestView.as_view('decline_request')
+app.add_url_rule(rule='/requests/decline/<int:request_id>', view_func=decline_request_view,
+                 methods=['POST'])
 
 
 req_history_view = RequestHistoryView.as_view("req_history_view")

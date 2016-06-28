@@ -82,6 +82,22 @@ class BaseRequestView(BaseMethodView):
         return self.get_model(rid,
                               RequestModel)
 
+    def decline_request(self, rid: int) -> object or None:
+        """
+        change Requester User state (point--)
+        delete Request Object
+        """
+
+        request = self.delete_model(rid,
+                                    RequestModel)
+        if not request:
+            return None
+
+        if not self._decrement_user_points(request.req_user_id):
+            return None
+
+        return request
+
     def _check_user_points(self, uid: int) -> bool:
         user = self.get_model(uid,
                               UserModel)

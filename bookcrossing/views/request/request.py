@@ -61,3 +61,15 @@ class RequestView(BaseRequestView):
         if not delete_request:
             return 'RequestView DELETE delete_request ERROR'
         return 'RequestView DELETE delete_request OK'
+
+
+class DeclineRequestView(BaseRequestView):
+
+    @login_required
+    def post(self, request_id=None):
+        if not request_id:
+            return 'DeclineRequestView POST request_id ERROR'
+        declined_request = self.decline_request(request_id)
+        if not declined_request:
+            return 'DeclineRequestView POST declined_request ERROR'
+        return 'DeclineRequestView POST OK'
