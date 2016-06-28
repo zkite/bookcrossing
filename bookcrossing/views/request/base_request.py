@@ -51,6 +51,9 @@ class BaseRequestView(BaseMethodView):
         if not request:
             return None
 
+        if not self._delete_not_approved_requests(request.book_id):
+            return None
+
         return request
 
     def delete_request(self, rid: int) -> object or None:
@@ -155,6 +158,13 @@ class BaseRequestView(BaseMethodView):
         book.user_id = requester.id
         db.session.add(book)
         db.session.commit()
+        return True
+
+    def _delete_not_approved_requests(self, book_id: int) -> list:
+        requests_list = RequestModel.query.filter_by(book_id=book_id,
+                                                     accept_date=None).all()
+        for request in requests_list:
+            self.decline_request(request.id)
         return True
 
     def _create_request_history(self, req_id):
