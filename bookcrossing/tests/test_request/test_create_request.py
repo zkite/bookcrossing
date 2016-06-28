@@ -10,6 +10,7 @@ from bookcrossing import db
 from bookcrossing.config import TestingConfig
 from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
+from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
@@ -84,11 +85,28 @@ class TestRequest(TestCase, BaseRequestView):
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
-        book_request_test_2 = self.create_request(uid=requester.id,
+        book_request_test_1 = self.create_request(uid=requester.id,
                                                   request_data=data)
 
-        self.assertEqual(book_request_test_2, None)
+        self.assertEqual(book_request_test_1, None)
         self.assertEqual(requester.points, requester.limit)
+
+    def test_create_request_existing_req_check(self):
+        test_req = RequestModel(book_id=12345,
+                                req_user_id=22222,
+                                owner_user_id=11111)
+        db.session.add(test_req)
+        db.session.commit()
+
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
+        book_request_test_1 = self.create_request(uid=requester.id,
+                                                  request_data=data)
+
+        self.assertEqual(book_request_test_1, None)
 
     def tearDown(self):
         db.session.remove()

@@ -19,6 +19,9 @@ class BaseRequestView(BaseMethodView):
         if not self._check_user_points(uid):
             return None
 
+        if self._check_existing_requests(uid=uid, book_id=request_data['book_id']):
+            return None
+
         request = self.create_model(RequestModel,
                                     **request_data)
         if not request:
@@ -169,13 +172,18 @@ class BaseRequestView(BaseMethodView):
 
     def _create_request_history(self, req_id):
         req = RequestModel.query.get(req_id)
-        print(req.book_id)
         return self.create_model(RequestHistoryModel,
                                  book_id=req.book_id,
                                  req_user_id=req.req_user_id,
                                  owner_user_id=req.owner_user_id,
                                  request_date=req.request_date,
                                  accept_date=req.accept_date)
+
+    @staticmethod
+    def _check_existing_requests(uid: int, book_id: int) -> bool:
+        res = RequestModel.query.filter_by(req_user_id=uid,
+                                           book_id=book_id).all()
+        return bool(res)
 
     @staticmethod
     def get_requests_by_category(category: str, current_user_id: int) -> list:
