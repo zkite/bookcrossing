@@ -60,7 +60,7 @@ from bookcrossing.views.user.user import (
     RestorePasswordView
 )
 
-from bookcrossing.views.error_handler import (
+from bookcrossing.views.error_handlers import (
     page_not_found,
     forbidden,
     gone,
