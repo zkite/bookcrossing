@@ -4,6 +4,8 @@ from flask_login import current_user, login_required
 
 from bookcrossing.views.request.base_request import BaseRequestView
 from bookcrossing.models.book import BookModel
+from bookcrossing.email.email import send_async_email
+from bookcrossing.models.user import UserModel
 
 
 class RequestView(BaseRequestView):
@@ -38,6 +40,20 @@ class RequestView(BaseRequestView):
                                            uid=current_user.id)
         if not book_request:
             return 'RequestView POST book_request ERROR'
+
+        send_async_email(to=current_user.email,
+                         subject='Hello From Request',
+                         template='email/outcome-request-notify',
+                         user=current_user,
+                         book=book)
+
+        owner = self.get_model(book.user_id, UserModel)
+        send_async_email(to=owner.email,
+                         subject='Hello From Request',
+                         template='email/request-notify',
+                         user=owner,
+                         book=book)
+
         return 'RequestView POST book_request OK'
 
     @login_required
