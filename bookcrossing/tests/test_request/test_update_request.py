@@ -66,8 +66,7 @@ class TestRequest(TestCase, BaseRequestView):
         self.assertNotEqual(book_request_test_1, None)
         self.assertIn(book_request_test_1, db.session)
         self.assertEqual(book.visible, False)
-        self.assertEqual(book_request_test_1.accept_date.strftime("%Y-%m-%d %H:%M"),
-                         datetime.now().strftime("%Y-%m-%d %H:%M"))
+        self.assertEqual(book_request_test_1.accept_date, data['accept_date'])
 
     def test_delete_not_approved_requests(self):
         book_request_test_1 = RequestModel.query.get(66666)

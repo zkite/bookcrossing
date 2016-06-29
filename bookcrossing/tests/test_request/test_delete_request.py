@@ -33,7 +33,6 @@ class TestRequest(TestCase, BaseRequestView):
                                 office='Dnepr-1',
                                 phone_number='1234567890')
         test_user_1.id = 11111
-        test_user_1.limit = 2
         test_user_1.points = 1
 
         test_user_2 = UserModel(login='test_user_2_login',
@@ -44,8 +43,6 @@ class TestRequest(TestCase, BaseRequestView):
                                 office='Kiev-1',
                                 phone_number='0987654321')
         test_user_2.id = 22222
-        test_user_2.limit = 2
-        test_user_2.points = 1
 
         book_test_1 = BookModel(title='test_book_1_title',
                                 author='test_book_1_author',

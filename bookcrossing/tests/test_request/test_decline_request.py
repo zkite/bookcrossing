@@ -10,7 +10,6 @@ from flask_testing import TestCase
 from bookcrossing import db
 from bookcrossing.config import TestingConfig
 from bookcrossing.models.user import UserModel
-from bookcrossing.models.book import BookModel
 from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
@@ -25,15 +24,6 @@ class TestRequest(TestCase, BaseRequestView):
         return app
 
     def setUp(self):
-        test_user_1 = UserModel(login='test_user_1_login',
-                                password='test_user_1_password',
-                                email='test_user_1_email',
-                                first_name='test_user_1_first_name',
-                                last_name='test_user_1_last_name',
-                                office='Dnepr-1',
-                                phone_number='1234567890')
-        test_user_1.id = 11111
-
         test_user_2 = UserModel(login='test_user_2_login',
                                 password='test_user_2_password',
                                 email='test_user_2_email',
@@ -44,20 +34,12 @@ class TestRequest(TestCase, BaseRequestView):
         test_user_2.id = 22222
         test_user_2.points = 1
 
-        book_test_1 = BookModel(title='test_book_1_title',
-                                author='test_book_1_author',
-                                publisher='test_book_1_publisher')
-        book_test_1.id = 12345
-        book_test_1.user_id = test_user_1.id
-
         book_request_test_1 = RequestModel(book_id=12345,
                                            req_user_id=22222,
                                            owner_user_id=11111)
         book_request_test_1.id = 55555
 
         db.session.add(book_request_test_1)
-        db.session.add(book_test_1)
-        db.session.add(test_user_1)
         db.session.add(test_user_2)
         db.session.commit()
 

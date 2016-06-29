@@ -42,8 +42,6 @@ class TestRequest(TestCase, BaseRequestView):
                                 office='Kiev-1',
                                 phone_number='0987654321')
         test_user_2.id = 22222
-        test_user_2.limit = 2
-        test_user_2.points = 1
 
         test_book_1 = BookModel(title='test_book_1_title',
                                 author='test_book_1_author',

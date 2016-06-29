@@ -32,8 +32,6 @@ class TestRequest(TestCase, BaseRequestView):
                                 office='Dnepr-1',
                                 phone_number='1234567890')
         test_user_1.id = 11111
-        test_user_1.limit = 2
-        test_user_1.points = 1
 
         test_user_2 = UserModel(login='test_user_2_login',
                                 password='test_user_2_password',
@@ -69,7 +67,6 @@ class TestRequest(TestCase, BaseRequestView):
 
         self.assertNotEqual(book_request_test_1, None)
         self.assertIn(book_request_test_1, db.session)
-        self.assertNotEqual(book_request_test_1, None)
         self.assertEqual(book_request_test_1.book_id, 12345)
         self.assertEqual(book_request_test_1.req_user_id, 22222)
         self.assertEqual(book_request_test_1.owner_user_id, 11111)

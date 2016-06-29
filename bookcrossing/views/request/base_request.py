@@ -163,7 +163,7 @@ class BaseRequestView(BaseMethodView):
         db.session.commit()
         return True
 
-    def _delete_not_approved_requests(self, book_id: int) -> list:
+    def _delete_not_approved_requests(self, book_id: int) -> bool:
         requests_list = RequestModel.query.filter_by(book_id=book_id,
                                                      accept_date=None).all()
         for request in requests_list:
