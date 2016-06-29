@@ -1,5 +1,5 @@
 from bookcrossing.views.base_view import BaseMethodView
-from bookcrossing.models.user_model import UserModel
+from bookcrossing.models.user import UserModel
 
 
 class BaseUsersView(BaseMethodView):

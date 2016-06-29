@@ -6,7 +6,7 @@ from bookcrossing.views.user.user_base import BaseUsersView
 from bookcrossing.forms.register_form import RegistrationForm
 from bookcrossing.forms.login_form import LoginForm
 from bookcrossing.forms.restore_password_form import RestorePasswordForm
-from bookcrossing.models.user_model import UserModel
+from bookcrossing.models.user import UserModel
 
 
 from bookcrossing.email.email import send_async_email

@@ -1,5 +1,5 @@
 from bookcrossing import login_manager, app
-from bookcrossing.models.user_model import UserModel
+from bookcrossing.models.user import UserModel
 from flask_login import current_user
 from flask import g
 
