@@ -38,6 +38,26 @@ class RequestView(BaseRequestView):
                                            uid=current_user.id)
         if not book_request:
             return 'RequestView POST book_request ERROR'
+
+        #####################################################
+        from bookcrossing.email.email import send_async_email
+        from bookcrossing.models.user import UserModel
+        # requester
+        send_async_email(to=current_user.email,
+                         subject='Hello From Request',
+                         template='email/outcome-request-notify',
+                         user=current_user,
+                         book=book)
+
+        # owner
+        owner = self.get_model(book.user_id, UserModel)
+        send_async_email(to=owner.email,
+                         subject='Hello From Request',
+                         template='email/request-notify',
+                         user=owner,
+                         book=book)
+        #####################################################
+
         return 'RequestView POST book_request OK'
 
     @login_required
