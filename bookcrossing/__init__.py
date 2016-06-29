@@ -39,8 +39,14 @@ login_manager.login_view = '/login/'
 
 from bookcrossing.views.index import Index
 from bookcrossing.views.search.book_search import BookSearchView
-from bookcrossing.views.books.book import BooksView, BookProfileView
-from bookcrossing.views.request.request import RequestView, DeclineRequestView
+from bookcrossing.views.books.book import (
+    BooksView,
+    BookProfileView
+)
+from bookcrossing.views.request.request import (
+    RequestView,
+    DeclineRequestView
+)
 
 # Views(controllers) for user ----------------
 
@@ -54,6 +60,12 @@ from bookcrossing.views.user.user import (
     RestorePasswordView
 )
 
+from bookcrossing.views.error_handler import (
+    page_not_found,
+    forbidden,
+    gone,
+    internal_server_error,
+)
 
 user_reg = RegistrationView.as_view('user_reg')
 app.add_url_rule('/registration/',  view_func=user_reg, methods=['GET', 'POST'])
@@ -83,13 +95,13 @@ from bookcrossing.views.request_history.request_history import RequestHistoryVie
 api.add_resource(Index, '/')
 
 book_view = BooksView.as_view('book_view')
-app.add_url_rule('/books', view_func=book_view, methods=['POST','GET', 'PUT', 'DELETE'])
+app.add_url_rule('/books', view_func=book_view, methods=['POST', 'GET', 'PUT', 'DELETE'])
 
 book_profile_view = BookProfileView.as_view('book_profile_view')
 app.add_url_rule('/books/<int:book_id>', view_func=book_profile_view, methods=['GET'])
 
 search_view = BookSearchView.as_view('search_view')
-app.add_url_rule('/search', view_func=search_view, methods=['POST','GET'])
+app.add_url_rule('/search', view_func=search_view, methods=['POST', 'GET'])
 
 
 request_view = RequestView.as_view('request')
@@ -109,6 +121,7 @@ req_history_view = RequestHistoryView.as_view("req_history_view")
 app.add_url_rule(rule="/requests/history", view_func=req_history_view, methods=['GET'])
 
 
-
-
-
+app.register_error_handler(404, page_not_found)
+app.register_error_handler(403, forbidden)
+app.register_error_handler(410, gone)
+app.register_error_handler(500, internal_server_error)
