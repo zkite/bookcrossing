@@ -8,6 +8,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from bookcrossing.config import runtime_config
 
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -33,26 +34,53 @@ mail.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.session_protection = 'strong'
+login_manager.login_view = '/login/'
 
 from bookcrossing.views.index import Index
 from bookcrossing.views.search.book_search import BookSearchView
 from bookcrossing.views.books.book import BooksView, BookProfileView
 from bookcrossing.views.request.request import RequestView, DeclineRequestView
 
-# Views(controllers) for user_resources ----------------
-from bookcrossing.views.user_resources import (index,
-                                               registration,
-                                               login,
-                                               logout,
-                                               user_profile,
-                                               edit_profile)
+# Views(controllers) for user ----------------
+
+from bookcrossing.views.user.user import (
+    RegistrationView,
+    LoginView,
+    LogoutView,
+    UsersListView,
+    UserProfileView,
+    EditUserProfileView,
+    RestorePasswordView
+)
+
+
+user_reg = RegistrationView.as_view('user_reg')
+app.add_url_rule('/registration/',  view_func=user_reg, methods=['GET', 'POST'])
+
+user_login = LoginView.as_view('user_login')
+app.add_url_rule('/login/',  view_func=user_login, methods=['GET', 'POST'])
+
+user_logout = LogoutView.as_view('user_logout')
+app.add_url_rule('/logout/',  view_func=user_logout, methods=['GET'])
+
+users_list = UsersListView.as_view('users_list')
+app.add_url_rule('/users/',  view_func=users_list, methods=['GET'])
+
+user_profile = UserProfileView.as_view('user_info')
+app.add_url_rule('/profile/', view_func=user_profile, methods=['GET'])
+app.add_url_rule('/profile/<int:user_id>', view_func=user_profile, methods=['GET'])
+
+edit_profile = EditUserProfileView.as_view('us_profile')
+app.add_url_rule('/edit/',  view_func=edit_profile, methods=['GET', 'POST'])
+
+restore_password = RestorePasswordView.as_view('restore_password')
+app.add_url_rule('/restore/',  view_func=restore_password, methods=['GET', 'POST'])
+
 
 from bookcrossing.views.request_history.request_history import RequestHistoryView
 
-
 api.add_resource(Index, '/')
-
 
 book_view = BooksView.as_view('book_view')
 app.add_url_rule('/books', view_func=book_view, methods=['POST','GET', 'PUT', 'DELETE'])
@@ -62,14 +90,6 @@ app.add_url_rule('/books/<int:book_id>', view_func=book_profile_view, methods=['
 
 search_view = BookSearchView.as_view('search_view')
 app.add_url_rule('/search', view_func=search_view, methods=['POST','GET'])
-
-
-app.add_url_rule('/registration', 'registration', registration, methods=['GET', 'POST'])
-app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
-app.add_url_rule('/logout', 'logout', logout)
-
-app.add_url_rule('/user_profile', 'user_profile', user_profile)
-app.add_url_rule('/edit_profile', 'edit_profile', edit_profile, methods=['GET', 'POST'])
 
 
 request_view = RequestView.as_view('request')
@@ -87,3 +107,8 @@ app.add_url_rule(rule='/requests/decline/<int:request_id>', view_func=decline_re
 
 req_history_view = RequestHistoryView.as_view("req_history_view")
 app.add_url_rule(rule="/requests/history", view_func=req_history_view, methods=['GET'])
+
+
+
+
+
