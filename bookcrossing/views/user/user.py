@@ -1,10 +1,13 @@
 from flask import flash, render_template, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.security import generate_password_hash
 
 from bookcrossing.views.user.user_base import BaseUsersView
 from bookcrossing.forms.register_form import RegistrationForm
 from bookcrossing.forms.login_form import LoginForm
+from bookcrossing.forms.restore_password_form import RestorePasswordForm
 from bookcrossing.models.user_model import UserModel
+
 
 from bookcrossing.email.email import send_async_email
 from bookcrossing.forms.edit_profile_form import EditProfileForm
@@ -47,8 +50,7 @@ class LoginView(BaseUsersView):
         if form.validate_on_submit():
             flag, user = self.verify_user(form)
             if flag:
-                login_user(user)
-                # return redirect(request.args.get('next') or '/user/')
+                login_user(user, form.remember_me.data)
                 return redirect(request.args.get('next') or '/profile/')
             flash('Invalid username or password.')
         return render_template('login.html', form=form)
@@ -107,3 +109,37 @@ class EditUserProfileView(BaseUsersView):
             return redirect('/profile/')
         return render_template('edit_profile.html', form=form)
 
+
+class RestorePasswordView(BaseUsersView):
+
+    @staticmethod
+    def get():
+        form = RestorePasswordForm()
+        return render_template('restore_password.html', form=form)
+
+    def post(self):
+        form = RestorePasswordForm()
+        if form.validate_on_submit():
+
+            user = UserModel.query.filter_by(email=form.email.data).first()
+
+            if form.login.data != user.login:
+                flash('Invalid username or email.')
+                return redirect('/restore/')
+
+            password_hash = generate_password_hash(form.password.data)
+            user_dict = {
+                'password_hash': password_hash
+            }
+            self.update_model(user.id, UserModel, user_dict)
+
+            flash('A new password has been sent to you by email.')
+
+            send_async_email(user.email,
+                             'New password',
+                             'email/restore',
+                             user=user,
+                             password=form.password.data)
+
+            return redirect('/login/')
+        return render_template('restore_password.html', form=form)

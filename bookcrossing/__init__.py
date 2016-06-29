@@ -54,7 +54,8 @@ from bookcrossing.views.user.user import (
     LogoutView,
     UsersListView,
     UserProfileView,
-    EditUserProfileView
+    EditUserProfileView,
+    RestorePasswordView
 )
 
 
@@ -76,3 +77,6 @@ app.add_url_rule('/profile/<int:user_id>', view_func=user_profile, methods=['GET
 
 edit_profile = EditUserProfileView.as_view('us_profile')
 app.add_url_rule('/edit/',  view_func=edit_profile, methods=['GET', 'POST'])
+
+restore_password = RestorePasswordView.as_view('restore_password')
+app.add_url_rule('/restore/',  view_func=restore_password, methods=['GET', 'POST'])

@@ -6,21 +6,33 @@ from bookcrossing.models.user_model import UserModel
 
 class RegistrationForm(Form):
     login = StringField('Login', validators=[InputRequired('Login is required'),
-                                             Length(min=3, max=20, message='Username must have from 5 to 12 characters'),
-                                             Regexp('^[A-z0-9].*$', message='Input doesnt match with required pattern')])
+                                             Length(min=3, max=20,
+                                                    message='Username must have from 3 to 12 characters'),
+                                             Regexp('^[A-z0-9].*$', message='Use only numbers and letters')],)
 
-    email = StringField('Email', validators=[InputRequired(), Length(1, 64), Email()])
+    email = StringField('Email', validators=[InputRequired(),
+                                             Length(1, 64),
+                                             Email()],
+                        render_kw={"placeholder": "email@com.com"})
 
-    first_name = StringField('First Name', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    first_name = StringField('First Name', validators=[InputRequired(),
+                                                       Length(min=3, max=256),
+                                                       Regexp('^[A-z0-9].*$', message='Use only numbers and letters')])
 
-    last_name = StringField('Last Name', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    last_name = StringField('Last Name', validators=[InputRequired(),
+                                                     Length(min=3, max=256),
+                                                     Regexp('^[A-z0-9].*$', message='Use only numbers and letters')])
 
-    office = StringField('Office', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    office = StringField('Office', validators=[InputRequired(),
+                                               Length(min=3, max=256),
+                                               Regexp('^[A-z0-9].*$', message='Use only numbers and letters')])
 
-    phone_number = StringField('Phone', validators=[InputRequired(), Length(min=3, max=256), Regexp('^[A-z0-9].*$')])
+    phone_number = StringField('Phone', validators=[InputRequired(),
+                                                    Regexp('\d{3}-\d{3}-\d{2}-\d{2}')],
+                               render_kw={"placeholder": "example: 063-000-00-00"})
 
-    password = PasswordField('Password',
-                             validators=[InputRequired(), EqualTo('confirm', message='Passwords must match.')])
+    password = PasswordField('Password', validators=[InputRequired(),
+                                                     EqualTo('confirm', message='Passwords must match.')])
 
     confirm = PasswordField('Confirm password', validators=[InputRequired()])
 
