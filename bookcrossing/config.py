@@ -14,13 +14,13 @@ class BaseConfig(object):
     STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 
     # EMAIL SETTINGS
-    MAIL_SERVER = 'smtp.yandex.ua'
+    MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     # MAIL_USERNAME = 'book.crossing.adm'
     # MAIL_PASSWORD = 'bookcrossing'
     MAIL_USERNAME = 'admbookcross@yandex.ru'
-    MAIL_PASSWORD = 'admkcross'
+    MAIL_PASSWORD = 'adminbookcrossing'
 
 
 class DevelopmentConfig(BaseConfig):

@@ -14,7 +14,7 @@ function IsJson(str) {
 
 // /books/<int:book_id>/requests'
 function request_book(book_id) {
-        var uri = "/books/" + book_id + "/requests"
+        var uri = "/books/" + book_id + "/requests";
         $.ajax({
                    url: uri,
                    type: "POST",
@@ -36,7 +36,7 @@ function save_book() {
 
     // ajax adding data to database
     $.ajax({
-               url: '{{ url_for('booksresource') }}',
+               url: '{{ url_for('book_view') }}',
                type: "POST",
                data: $('#form').serialize(),
                success: function (data) {
@@ -89,7 +89,7 @@ function delete_book(id) {
     book['id'] = id;
 
     $.ajax({
-               url: "{{ url_for('booksresource') }}",
+               url: "{{ url_for('book_view') }}",
                data: JSON.stringify(book),
                type: "DELETE",
                contentType: "application/json",
@@ -143,7 +143,7 @@ function update_book() {
     //console.log($('#form').serialize());
 
     $.ajax({
-               url: '{{ url_for("booksresource") }}',
+               url: '{{ url_for("book_view") }}',
                type: "PUT",
                data: $('#form').serialize(),
                success: function (data) {
