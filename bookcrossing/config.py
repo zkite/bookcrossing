@@ -14,13 +14,13 @@ class BaseConfig(object):
     STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 
     # EMAIL SETTINGS
-    MAIL_SERVER = 'smtp.yandex.ua'
+    MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     # MAIL_USERNAME = 'book.crossing.adm'
     # MAIL_PASSWORD = 'bookcrossing'
     MAIL_USERNAME = 'admbookcross@yandex.ru'
-    MAIL_PASSWORD = 'admkcross'
+    MAIL_PASSWORD = 'adminbookcrossing'
 
 
 class DevelopmentConfig(BaseConfig):
@@ -59,3 +59,37 @@ def runtime_config(status):
         return TestingConfig
 
     return BaseConfig
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(levelname)s:%(name)s: %(message)s '
+                      '(%(asctime)s; %(filename)s:%(lineno)d)',
+            'datefmt': "%Y-%m-%d %H:%M:%S",
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'formatter': 'standard',
+            'class': 'logging.StreamHandler',
+        },
+        'rotate_file': {
+            'level': 'DEBUG',
+            'formatter': 'standard',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'rotated.log',
+            'encoding': 'utf8',
+            'maxBytes': 100000,
+            'backupCount': 1,
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console', 'rotate_file'],
+            'level': 'DEBUG',
+        },
+    }
+}

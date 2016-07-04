@@ -40,23 +40,23 @@ class BaseMethodView(MethodView):
             return m
 
     def update_model(self, mid: int, model: Model, data: dict) -> Model or None:
-        m = self.get_model(mid, model)
-        if m and data:
-            for k, v in data.items():
+            m = self.get_model(mid, model)
+            if m and data:
+                for k in data:
+                    if hasattr(m, k):
+                        setattr(m, k, data[k])
+                    else:
+                        return None
+
+                db.session.add(m)
                 try:
-                    hasattr(m, k)
-                except AttributeError:
+                    db.session.commit()
+                except(ProgrammingError, IntegrityError):
                     return None
                 else:
-                    setattr(m, k, v)
-            try:
-                db.session.commit()
-            except(ProgrammingError, IntegrityError):
-                return None
+                    return m
             else:
-                return m
-        else:
-            return None
+                return None
 
     def serialize_model(self, mid: int, model: Model, schema: ModelSchema) -> Model or None:
         m = self.get_model(mid, model)

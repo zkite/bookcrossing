@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<h1 class="page-header">Info about user: {{user.login}} </h1>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Login - {{ user.login }}
+                </div>
+            </div>
+            <div class="panel-body">
+                email - {{ user.email|e }}<br>
+                First Name - {{ user.first_name|e }}<br>
+                Last Name - {{ user.last_name|e }}<br>
+                Office - {{ user.office|e }}<br>
+                Phone - {{ user.phone_number|e }}<br>
+            </div>
+        </div>
+
+{% endblock %}
