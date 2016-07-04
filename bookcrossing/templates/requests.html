@@ -10,13 +10,14 @@ function accept_req(request_id) {
                type: "PUT",
                success: function (data) {
                    //console.log(JSON.parse(data));
+                   alert(data);
                    location.reload()
                },
                error: function (jqXHR, textStatus, errorThrown) {
                    console.log(jqXHR);
                    console.log(textStatus);
                    console.log(errorThrown);
-                   alert('Error update request');
+                   alert(data);
                }
            });
 }
@@ -27,13 +28,15 @@ function delete_req(request_id) {
                type: "DELETE",
                success: function (data) {
                    //console.log(JSON.parse(data));
-                   location.reload()
+                   alert(data);
+                   location.reload();
+
                },
                error: function (jqXHR, textStatus, errorThrown) {
                    console.log(jqXHR);
                    console.log(textStatus);
                    console.log(errorThrown);
-                   alert('Error DELETE request');
+                   alert(data);
                }
            });
 }
@@ -45,13 +48,14 @@ function decline_req(request_id) {
                type: "POST",
                success: function (data) {
                    //console.log(JSON.parse(data));
-                   location.reload()
+                   alert(data);
+                   location.reload();
                },
                error: function (jqXHR, textStatus, errorThrown) {
                    console.log(jqXHR);
                    console.log(textStatus);
                    console.log(errorThrown);
-                   alert('Error POST decline_request');
+                   alert(data);
                }
            });
 }

@@ -33,16 +33,16 @@ class RequestView(BaseRequestView):
     def post(self, book_id=None):
         if not book_id:
             logging.error('RequestView POST book_id ERROR')
-            return 'RequestView POST book_id ERROR'
+            return 'Book ID Error'
         if not current_user:
             logging.error('RequestView POST current_user ERROR')
-            return 'RequestView POST current_user ERROR'
+            return 'Current User Error'
         book = self.get_model(book_id,
                               BookModel)
         logging.info('Book:{}'.format(book))
         if not book:
             logging.error('RequestView POST Book ERROR')
-            return 'RequestView POST Book ERROR'
+            return 'Book Request Error'
         data = {'book_id': book.id,
                 'req_user_id': current_user.id,
                 'owner_user_id': book.user_id}
@@ -51,7 +51,8 @@ class RequestView(BaseRequestView):
         logging.info('Book request:{}'.format(book_request))
         if not book_request:
             logging.error('RequestView POST book_request ERROR')
-            return 'RequestView POST book_request ERROR'
+            return 'Book Request Error'
+
         send_async_email(to=current_user.email,
                          subject='Hello From Request',
                          template='email/outcome-request-notify',
@@ -65,39 +66,39 @@ class RequestView(BaseRequestView):
                          template='email/request-notify',
                          user=owner,
                          book=book)
+
         logging.info('RequestView POST book_request OK')
-        return 'RequestView POST book_request OK'
+        return 'Book Request was created successfully'
 
     @login_required
     def put(self, request_id=None):
         if not request_id:
             logging.error('RequestView PUT request_id ERROR')
-            return 'RequestView PUT request_id ERROR'
+            return 'Book Request ID Error'
         data = {'accept_date': datetime.now()}
         update_request = self.update_request(rid=request_id,
                                              request_data=data)
         logging.info('Updated request:{}'.format(update_request))
         if not update_request:
             logging.error('RequestView PUT update_request ERROR')
-            return 'RequestView PUT update_request ERROR'
+            return 'Update Request Error'
         logging.info('RequestView PUT update_request OK')
-        return 'RequestView PUT update_request OK'
+        return 'Book Request was updated successfully'
 
     @login_required
     def delete(self, request_id=None):
         if not request_id:
             logging.error('RequestView DELETE request_id ERROR')
-            return 'RequestView DELETE request_id ERROR'
+            return 'Book Request ID Error'
         history_request = self._create_request_history(request_id)
         delete_request = self.delete_request(rid=request_id)
         logging.info('Deleted request:{}'.format(delete_request))
         logging.info('History request:{}'.format(history_request))
         if not delete_request:
             logging.error('RequestView DELETE delete_request ERROR')
-            return 'RequestView DELETE delete_request ERROR'
+            return 'Book Request was not deleted successfully'
         logging.info('RequestView DELETE delete_request OK')
-        return 'RequestView DELETE delete_request OK'
-
+        return 'Book Request was deleted successfully'
 
 
 class DeclineRequestView(BaseRequestView):
@@ -106,10 +107,10 @@ class DeclineRequestView(BaseRequestView):
     def post(self, request_id=None):
         if not request_id:
             logging.error('DeclineRequestView POST request_id ERROR')
-            return 'DeclineRequestView POST request_id ERROR'
+            return 'Book Request ID ERROR'
         declined_request = self.decline_request(request_id)
         if not declined_request:
             logging.error('DeclineRequestView POST declined_request ERROR')
-            return 'DeclineRequestView POST declined_request ERROR'
+            return 'Decline Request Error'
         logging.info('DeclineRequestView POST OK')
-        return 'DeclineRequestView POST OK'
+        return 'Book Request was declined successfully'
