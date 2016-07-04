@@ -1,6 +1,5 @@
 import sys
 import os
-
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
@@ -11,12 +10,11 @@ from bookcrossing import db
 from bookcrossing.config import TestingConfig
 from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
+from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
-class TestRequest(TestCase):
-    test_request = BaseRequestView()
-
+class TestRequest(TestCase, BaseRequestView):
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -34,8 +32,6 @@ class TestRequest(TestCase):
                                 office='Dnepr-1',
                                 phone_number='1234567890')
         test_user_1.id = 11111
-        test_user_1.limit = 2
-        test_user_1.points = 1
 
         test_user_2 = UserModel(login='test_user_2_login',
                                 password='test_user_2_password',
@@ -45,6 +41,8 @@ class TestRequest(TestCase):
                                 office='Kiev-1',
                                 phone_number='0987654321')
         test_user_2.id = 22222
+        test_user_2.limit = 2
+        test_user_2.points = 1
 
         test_book_1 = BookModel(title='test_book_1_title',
                                 author='test_book_1_author',
@@ -57,53 +55,60 @@ class TestRequest(TestCase):
         db.session.add(test_book_1)
         db.session.commit()
 
-    def test_check_user_points(self):
-        res = TestRequest.test_request._check_user_points(11111)
-
-        self.assertEqual(res, True)
-
-    def test_increment_user_points(self):
-        res = TestRequest.test_request._increment_user_points(11111)
-
-        self.assertEqual(res, True)
-
-    def test_decrement_user_points(self):
-        res = TestRequest.test_request._decrement_user_points(11111)
-
-        self.assertEqual(res, True)
-
-    def test_make_book_visible(self):
-        book = BookModel.query.get(12345)
-        book.visible = False
-
-        TestRequest.test_request._make_book_visible(bid=book.id)
-
-        self.assertEqual(book.visible, True)
-
-    def test_make_book_invisible(self):
-        book = BookModel.query.get(12345)
-        book.visible = True
-
-        TestRequest.test_request._make_book_invisible(bid=book.id)
-
-        self.assertEqual(book.visible, False)
-
-    def test_change_book_owner(self):
+    def test_create_request(self):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
 
-        res = TestRequest.test_request._change_book_owner(bid=book.id,
-                                                          rid=requester.id)
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
+        book_request_test_1 = self.create_request(uid=requester.id,
+                                                  request_data=data)
 
-        self.assertEqual(res, True)
-        self.assertEqual(book.user_id, requester.id)
+        self.assertNotEqual(book_request_test_1, None)
+        self.assertIn(book_request_test_1, db.session)
+        self.assertEqual(book_request_test_1.book_id, 12345)
+        self.assertEqual(book_request_test_1.req_user_id, 22222)
+        self.assertEqual(book_request_test_1.owner_user_id, 11111)
+        self.assertEqual(requester.limit, 2)
+        self.assertEqual(requester.points, 2)
+
+    def test_create_request_points_fail(self):
+        # can't create request because of user points check
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        requester.limit = 1
+
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
+        book_request_test_1 = self.create_request(uid=requester.id,
+                                                  request_data=data)
+
+        self.assertEqual(book_request_test_1, None)
+        self.assertEqual(requester.points, requester.limit)
+
+    def test_create_request_existing_req_check(self):
+        test_req = RequestModel(book_id=12345,
+                                req_user_id=22222,
+                                owner_user_id=11111)
+        db.session.add(test_req)
+        db.session.commit()
+
+        book = BookModel.query.get(12345)
+        requester = UserModel.query.get(22222)
+        data = {'book_id': book.id,
+                'req_user_id': requester.id,
+                'owner_user_id': book.user_id}
+        book_request_test_1 = self.create_request(uid=requester.id,
+                                                  request_data=data)
+
+        self.assertEqual(book_request_test_1, None)
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
 
-
 if __name__ == '__main__':
     import unittest
-
     unittest.main()

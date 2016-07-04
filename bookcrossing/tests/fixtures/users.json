@@ -27,17 +27,5 @@
         "points": 1
       }
     ]
-  },
-  {
-    "model": "bookcrossing.models.book.BookModel",
-    "records": [
-      {
-        "id": 12345,
-        "title": "test_book_1_title",
-        "user_id": 11111,
-        "author": "test_book_1_author",
-        "publisher": "test_book_1_publisher"
-      }
-    ]
   }
 ]

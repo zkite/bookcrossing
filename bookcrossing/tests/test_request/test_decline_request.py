@@ -14,7 +14,9 @@ from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
-class TestRequest(TestCase, BaseRequestView):
+class TestRequest(TestCase):
+    test_request = BaseRequestView()
+
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -46,7 +48,7 @@ class TestRequest(TestCase, BaseRequestView):
     def test_decline_request(self):
         requester = UserModel.query.get(22222)
 
-        book_request_test_1 = self.decline_request(55555)
+        book_request_test_1 = TestRequest.test_request.decline_request(55555)
 
         self.assertNotEqual(book_request_test_1, None)
         self.assertNotIn(book_request_test_1, db.session)
@@ -59,4 +61,5 @@ class TestRequest(TestCase, BaseRequestView):
 
 if __name__ == '__main__':
     import unittest
+
     unittest.main()

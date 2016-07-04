@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
@@ -14,7 +15,9 @@ from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
-class TestRequest(TestCase, BaseRequestView):
+class TestRequest(TestCase):
+    test_request = BaseRequestView()
+
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -62,8 +65,8 @@ class TestRequest(TestCase, BaseRequestView):
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
-        book_request_test_1 = self.create_request(uid=requester.id,
-                                                  request_data=data)
+        book_request_test_1 = TestRequest.test_request.create_request(uid=requester.id,
+                                                                      request_data=data)
 
         self.assertNotEqual(book_request_test_1, None)
         self.assertIn(book_request_test_1, db.session)
@@ -82,8 +85,8 @@ class TestRequest(TestCase, BaseRequestView):
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
-        book_request_test_1 = self.create_request(uid=requester.id,
-                                                  request_data=data)
+        book_request_test_1 = TestRequest.test_request.create_request(uid=requester.id,
+                                                                      request_data=data)
 
         self.assertEqual(book_request_test_1, None)
         self.assertEqual(requester.points, requester.limit)
@@ -100,8 +103,8 @@ class TestRequest(TestCase, BaseRequestView):
         data = {'book_id': book.id,
                 'req_user_id': requester.id,
                 'owner_user_id': book.user_id}
-        book_request_test_1 = self.create_request(uid=requester.id,
-                                                  request_data=data)
+        book_request_test_1 = TestRequest.test_request.create_request(uid=requester.id,
+                                                                      request_data=data)
 
         self.assertEqual(book_request_test_1, None)
 
@@ -109,6 +112,8 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.remove()
         db.drop_all()
 
+
 if __name__ == '__main__':
     import unittest
+
     unittest.main()

@@ -37,6 +37,7 @@ class TestingConfig(BaseConfig):
     BCRYPT_LOG_ROUNDS = 1
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    FIXTURES_DIRS = ['test/fixtures']
 
 
 class ProductionConfig(BaseConfig):

@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
@@ -12,7 +13,9 @@ from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
-class TestRequest(TestCase, BaseRequestView):
+class TestRequest(TestCase):
+    test_request = BaseRequestView()
+
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -31,8 +34,7 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.commit()
 
     def test_get_request(self):
-
-        request_test = self.get_request(55555)
+        request_test = TestRequest.test_request.get_request(55555)
 
         self.assertIn(request_test, db.session)
         self.assertNotEqual(request_test, None)
@@ -41,6 +43,8 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.remove()
         db.drop_all()
 
+
 if __name__ == '__main__':
     import unittest
+
     unittest.main()

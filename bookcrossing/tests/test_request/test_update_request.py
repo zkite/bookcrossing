@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
@@ -14,7 +15,9 @@ from bookcrossing.models.requests import RequestModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
-class TestRequest(TestCase, BaseRequestView):
+class TestRequest(TestCase):
+    test_request = BaseRequestView()
+
     def create_app(self):
         app = Flask(__name__)
         app.config.from_object(TestingConfig)
@@ -60,8 +63,8 @@ class TestRequest(TestCase, BaseRequestView):
     def test_update_request(self):
         book = BookModel.query.get(12345)
         data = {'accept_date': datetime.now()}
-        book_request_test_1 = self.update_request(rid=55555,
-                                                  request_data=data)
+        book_request_test_1 = TestRequest.test_request.update_request(rid=55555,
+                                                                      request_data=data)
 
         self.assertNotEqual(book_request_test_1, None)
         self.assertIn(book_request_test_1, db.session)
@@ -72,7 +75,7 @@ class TestRequest(TestCase, BaseRequestView):
         book_request_test_1 = RequestModel.query.get(66666)
         book_request_test_2 = RequestModel.query.get(77777)
         book_request_test_3 = RequestModel.query.get(88888)
-        res = self._delete_not_approved_requests(book_id=12345)
+        res = TestRequest.test_request._delete_not_approved_requests(book_id=12345)
 
         self.assertEqual(res, True)
         self.assertNotIn(book_request_test_1, db.session)
@@ -83,6 +86,8 @@ class TestRequest(TestCase, BaseRequestView):
         db.session.remove()
         db.drop_all()
 
+
 if __name__ == '__main__':
     import unittest
+
     unittest.main()
