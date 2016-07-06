@@ -5,6 +5,7 @@ from sqlalchemy import event
 from bookcrossing import db
 from bookcrossing.models.requests import RequestModel
 from bookcrossing.models.book import BookModel
+from bookcrossing.models.category import CategoryModel
 from bookcrossing.models.user import UserModel
 
 
@@ -38,17 +39,18 @@ class RequestHistoryModel(db.Model):
     def __init__(self, book_id, req_user_id, owner_user_id,
                  request_date=None, accept_date=None):
         book = BookModel.query.get(book_id)
+        category = CategoryModel.query.get(book.category_id)
         self.book_title = book.title
         self.book_author = book.author
         self.book_publisher = book.publisher
-        #self.book_category = book.category
+        self.book_category = category.name
 
         req_user = UserModel.query.get(req_user_id)
         self.req_user_login = req_user.login
         self.req_user_email = req_user.email
         self.req_user_first_name = req_user.first_name
         self.req_user_last_name = req_user.last_name
-        #self.req_user_office = req_user.office
+        self.req_user_office = req_user.office
         self.req_user_phone_number = req_user.phone_number
 
         owner_user = UserModel.query.get(owner_user_id)
@@ -56,7 +58,7 @@ class RequestHistoryModel(db.Model):
         self.owner_user_email = owner_user.email
         self.owner_user_first_name = owner_user.first_name
         self.owner_user_last_name = owner_user.last_name
-        #self.owner_user_office = owner_user.office
+        self.owner_user_office = owner_user.office
         self.owner_user_phone_number = owner_user.phone_number
 
         self.request_date = request_date

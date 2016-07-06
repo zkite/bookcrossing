@@ -68,8 +68,8 @@ class TestRequest(TestCase, BaseRequestView):
         book = BookModel.query.get(12345)
         requester = UserModel.query.get(22222)
         owner = UserModel.query.get(book.user_id)
-
         book_request_test_1 = self.delete_request(55555)
+
 
         self.assertNotEqual(book_request_test_1, None)
         self.assertNotIn(book_request_test_1, db.session)
