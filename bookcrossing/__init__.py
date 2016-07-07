@@ -3,7 +3,6 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_restful import Api
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from bookcrossing.config import runtime_config
@@ -15,30 +14,26 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # dev, prod, test
 APP_STATUS = 'dev'
 
-mail = Mail()
 
 app = Flask(__name__)
 app.config.from_object(runtime_config(APP_STATUS))
 
-bootstrap = Bootstrap()
-bootstrap.init_app(app)
+bootstrap = Bootstrap(app)
 
-api = Api(app)
 db = SQLAlchemy(app)
 
-db.init_app(app)
 with app.app_context():
     db.create_all()
 
-mail.init_app(app)
+mail = Mail(app)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = '/login/'
 
 from bookcrossing.views.index import Index
 from bookcrossing.views.search.book_search import BookSearchView
+from bookcrossing.views.request_history.request_history import RequestHistoryView
 from bookcrossing.views.books.book import (
     BooksView,
     BookProfileView
@@ -47,9 +42,6 @@ from bookcrossing.views.request.request import (
     RequestView,
     DeclineRequestView
 )
-
-# Views(controllers) for user ----------------
-
 from bookcrossing.views.user.user import (
     RegistrationView,
     LoginView,
@@ -59,7 +51,6 @@ from bookcrossing.views.user.user import (
     EditUserProfileView,
     RestorePasswordView
 )
-
 from bookcrossing.views.error_handlers import (
     page_not_found,
     forbidden,
@@ -89,9 +80,6 @@ app.add_url_rule('/edit/',  view_func=edit_profile, methods=['GET', 'POST'])
 restore_password = RestorePasswordView.as_view('restore_password')
 app.add_url_rule('/restore/',  view_func=restore_password, methods=['GET', 'POST'])
 
-
-from bookcrossing.views.request_history.request_history import RequestHistoryView
-
 index_view = Index.as_view('index')
 app.add_url_rule('/', view_func=index_view, methods=['GET'])
 
@@ -104,19 +92,17 @@ app.add_url_rule('/books/<int:book_id>', view_func=book_profile_view, methods=['
 search_view = BookSearchView.as_view('search_view')
 app.add_url_rule('/search', view_func=search_view, methods=['POST', 'GET'])
 
-
 request_view = RequestView.as_view('request')
 app.add_url_rule(rule='/requests/<int:request_id>', view_func=request_view,
                  methods=['PUT', 'DELETE'])
 app.add_url_rule(rule='/books/<int:book_id>/requests', view_func=request_view,
                  methods=['POST'])
 app.add_url_rule(rule='/requests', view_func=request_view,
-                 methods=['GET'])  # lists of income and outcome requests
+                 methods=['GET'])
 
 decline_request_view = DeclineRequestView.as_view('decline_request')
 app.add_url_rule(rule='/requests/decline/<int:request_id>', view_func=decline_request_view,
                  methods=['POST'])
-
 
 req_history_view = RequestHistoryView.as_view("req_history_view")
 app.add_url_rule(rule="/requests/history", view_func=req_history_view, methods=['GET'])

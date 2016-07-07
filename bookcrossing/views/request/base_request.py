@@ -170,7 +170,7 @@ class BaseRequestView(BaseMethodView):
             self.decline_request(request.id)
         return True
 
-    def _create_request_history(self, req_id):
+    def _create_request_history(self, req_id: int) -> object:
         req = RequestModel.query.get(req_id)
         return self.create_model(RequestHistoryModel,
                                  book_id=req.book_id,
