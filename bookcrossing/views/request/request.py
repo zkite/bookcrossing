@@ -19,7 +19,7 @@ class RequestView(BaseRequestView):
     @login_required
     def get(self):
         select_category = request.values.get('select')
-        logging.info('Selected category: {}'.format(select_category))
+        logging.debug('GET.Selected category: {}'.format(select_category))
         requests = None
         if select_category:
             requests = self.get_requests_by_category(category=select_category,
