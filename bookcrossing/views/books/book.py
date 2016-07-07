@@ -34,6 +34,7 @@ class BooksView(BaseBookView):
         Create book
         """
         form = AddBookForm(request.form)
+        print(request.form)
         if form.validate():
             logging.debug('Hello from POST. Add book form validated.')
             self.create_model(BookModel, CategoryModel, form.data)
@@ -80,4 +81,4 @@ class BookProfileView(BaseBookView):
         book, owner = self.get_book_profile(book_id)
         return render_template('book_profile.html', book_id=book_id, book=book, owner=owner), \
                logging.debug('Hello from GET. Book {} profile template rendered.'
-                             .format(book.title))
+                             .format(book['title']))
