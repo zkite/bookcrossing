@@ -1,3 +1,4 @@
+import logging
 import logging.config
 
 from flask import render_template
@@ -11,4 +12,5 @@ logging.config.dictConfig(LOGGING)
 class Index(BaseMethodView):
 
     def get(self):
+        logging.debug('Index resource')
         return render_template('index.html')
