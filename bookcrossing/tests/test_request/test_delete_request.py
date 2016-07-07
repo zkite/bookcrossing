@@ -4,10 +4,9 @@ import os
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
-from flask import Flask
 from flask_testing import TestCase
 
-from bookcrossing import db
+from bookcrossing import db, app
 from bookcrossing.config import TestingConfig
 from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
@@ -16,10 +15,8 @@ from bookcrossing.views.request.base_request import BaseRequestView
 
 
 class TestRequest(TestCase, BaseRequestView):
-    def create_app(self):
-        app = Flask(__name__)
+    def create_app(self, app=app):
         app.config.from_object(TestingConfig)
-        db.init_app(app)
         with app.app_context():
             db.create_all()
         return app
@@ -69,8 +66,6 @@ class TestRequest(TestCase, BaseRequestView):
         requester = UserModel.query.get(22222)
         owner = UserModel.query.get(book.user_id)
         book_request_test_1 = self.delete_request(55555)
-
-
         self.assertNotEqual(book_request_test_1, None)
         self.assertNotIn(book_request_test_1, db.session)
         self.assertEqual(book.user_id, requester.id)

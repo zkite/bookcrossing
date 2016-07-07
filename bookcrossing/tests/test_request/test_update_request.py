@@ -4,10 +4,9 @@ sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),
                              '../..'))
 
 from datetime import datetime
-from flask import Flask
 from flask_testing import TestCase
 
-from bookcrossing import db
+from bookcrossing import db, app
 from bookcrossing.config import TestingConfig
 from bookcrossing.models.book import BookModel
 from bookcrossing.models.requests import RequestModel
@@ -15,10 +14,8 @@ from bookcrossing.views.request.base_request import BaseRequestView
 
 
 class TestRequest(TestCase, BaseRequestView):
-    def create_app(self):
-        app = Flask(__name__)
+    def create_app(self, app=app):
         app.config.from_object(TestingConfig)
-        db.init_app(app)
         with app.app_context():
             db.create_all()
         return app
@@ -62,7 +59,6 @@ class TestRequest(TestCase, BaseRequestView):
         data = {'accept_date': datetime.now()}
         book_request_test_1 = self.update_request(rid=55555,
                                                   request_data=data)
-
         self.assertNotEqual(book_request_test_1, None)
         self.assertIn(book_request_test_1, db.session)
         self.assertEqual(book.visible, False)
@@ -74,7 +70,6 @@ class TestRequest(TestCase, BaseRequestView):
         book_request_test_2 = RequestModel.query.get(77777)
         book_request_test_3 = RequestModel.query.get(88888)
         res = self._delete_not_approved_requests(book_id=12345)
-
         self.assertEqual(res, True)
         self.assertNotIn(book_request_test_1, db.session)
         self.assertNotIn(book_request_test_2, db.session)

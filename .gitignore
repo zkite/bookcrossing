@@ -131,8 +131,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-migrations
-*.pyc
 venv
 
 # SQLite databases
