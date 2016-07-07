@@ -72,10 +72,6 @@ class TestRequestHistory(TestCase, BaseRequestView):
         db.session.commit()
 
     def test_create_request_history(self):
-        book = BookModel.query.get(12345)
-        requester = UserModel.query.get(22222)
-        owner = UserModel.query.get(11111)
-
         count_before = RequestHistoryModel.query.count()
         self._create_request_history(55555)
         count_after = RequestHistoryModel.query.count()
