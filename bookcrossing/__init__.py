@@ -92,7 +92,8 @@ app.add_url_rule('/restore/',  view_func=restore_password, methods=['GET', 'POST
 
 from bookcrossing.views.request_history.request_history import RequestHistoryView
 
-api.add_resource(Index, '/')
+index_view = Index.as_view('index')
+app.add_url_rule('/', view_func=index_view, methods=['GET'])
 
 book_view = BooksView.as_view('book_view')
 app.add_url_rule('/books', view_func=book_view, methods=['POST', 'GET', 'PUT', 'DELETE'])
