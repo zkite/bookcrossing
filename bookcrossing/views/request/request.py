@@ -63,7 +63,7 @@ class RequestView(BaseRequestView):
         logging.info('Owner is:{}'.format(owner))
         send_async_email(to=owner.email,
                          subject='Hello From Request',
-                         template='email/request-notify',
+                         template='email/outcome-request-notify',
                          user=owner,
                          book=book)
 
