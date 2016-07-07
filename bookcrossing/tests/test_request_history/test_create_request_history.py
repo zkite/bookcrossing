@@ -13,6 +13,7 @@ from bookcrossing.models.user import UserModel
 from bookcrossing.models.book import BookModel
 from bookcrossing.models.requests import RequestModel
 from bookcrossing.models.request_history import RequestHistoryModel
+from bookcrossing.models.category import CategoryModel
 from bookcrossing.views.request.base_request import BaseRequestView
 
 
@@ -52,6 +53,7 @@ class TestRequestHistory(TestCase, BaseRequestView):
                                 author='test_book_1_author',
                                 publisher='test_book_1_publisher')
         book_test_1.id = 12345
+        book_test_1.category_id = 99
         book_test_1.user_id = test_user_1.id
 
         book_request_test_1 = RequestModel(book_id=12345,
@@ -59,10 +61,14 @@ class TestRequestHistory(TestCase, BaseRequestView):
                                            owner_user_id=11111)
         book_request_test_1.id = 55555
 
+        category_test = CategoryModel(name='category_test')
+        category_test.id = 99
+
         db.session.add(book_request_test_1)
         db.session.add(book_test_1)
         db.session.add(test_user_1)
         db.session.add(test_user_2)
+        db.session.add(category_test)
         db.session.commit()
 
     def test_create_request_history(self):
