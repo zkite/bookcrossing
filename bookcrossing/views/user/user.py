@@ -1,8 +1,9 @@
+import logging
+import logging.config
+
 from flask import flash, render_template, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash
-import logging
-import logging.config
 
 from bookcrossing.views.user.user_base import BaseUsersView
 from bookcrossing.forms.register_form import RegistrationForm
