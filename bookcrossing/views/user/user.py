@@ -23,14 +23,15 @@ class RegistrationView(BaseUsersView):
     @staticmethod
     def get():
         form = RegistrationForm()
-        return render_template('registration.html', form=form), \
-               logging.debug('Registration form rendered.')
+        logging.debug('GET. Registration form rendered.')
+        return render_template('registration.html', form=form)
+
 
 
     def post(self):
         form = RegistrationForm()
         if form.validate_on_submit():
-            logging.debug('Registration form validated.')
+            logging.debug('Registration template validated.')
             user = self.form_to_user(form)
             self.create_model(UserModel, **user)
             logging.debug('User {} created.'.format(user['login']))
@@ -43,13 +44,15 @@ class RegistrationView(BaseUsersView):
                              'email/greeting',
                              first_name=form.first_name.data)
             logging.debug('Email to {} sended.'.format(user['email']))
+            logging.debug('User {} registered and can login.'
+                          .format(user['login']))
 
-            return redirect('/login/'), \
-                   logging.debug('User {} registered and can login.'
-                                 .format(user['login']))
-        return render_template('registration.html', form=form), \
-               logging.debug('User entered invalid values on submit. '
-                             'Registration form rendered again.')
+            return redirect('/login/')
+
+        logging.debug('User entered invalid values on submit. '
+                      'Registration template rendered again.')
+        return render_template('registration.html', form=form)
+
 
 
 class LoginView(BaseUsersView):
@@ -57,8 +60,9 @@ class LoginView(BaseUsersView):
     @staticmethod
     def get():
         form = LoginForm()
-        return render_template('login.html', form=form), \
-               logging.debug('Registration form rendered.')
+        logging.debug('Registration form rendered.')
+        return render_template('login.html', form=form)
+
 
     def post(self):
         form = LoginForm()
@@ -68,14 +72,15 @@ class LoginView(BaseUsersView):
             if flag:
                 logging.debug('User {} is in DB.'.format(user.login))
                 login_user(user, form.remember_me.data)
-                return redirect(request.args.get('next') or '/profile/'), \
-                       logging.debug('User {} is logged in and redirected.'
-                                     .format(user.login))
+                logging.debug('User {} is logged in and redirected.'
+                              .format(user.login))
+                return redirect(request.args.get('next') or '/profile/')
+
             flash('Invalid username or password.')
-            logging.debug('User entered invalid username or password.')
-        return render_template('login.html', form=form), \
-               logging.debug('User entered invalid values on submit. '
-                             'Login form rendered again.')
+            logging.debug('User entered invalid values on submit. '
+                          'Login form rendered again.')
+        return render_template('login.html', form=form)
+
 
 
 
@@ -87,8 +92,8 @@ class LogoutView(BaseUsersView):
         logout_user()
         logging.debug('User is logged out.')
         flash('You have been logged out!')
-
-        return redirect('/login'), logging.debug('Redirection to /login.')
+        logging.debug('Redirection to /login.')
+        return redirect('/login')
 
 
 class UsersListView(BaseUsersView):
@@ -97,9 +102,9 @@ class UsersListView(BaseUsersView):
     @login_required
     def get():
         users_list = UserModel.query.all()
-        #logging.info(UserModel.query.all)
-        return render_template('users.html', users=users_list), \
-               logging.debug('All users list shown.')
+        logging.debug('All users list shown.')
+        return render_template('users.html', users=users_list)
+
 
 
 
@@ -108,14 +113,16 @@ class UserProfileView(BaseUsersView):
     @login_required
     def get(self, user_id=None):
         if user_id is None:
-            return render_template('user_profile.html'), \
-                   logging.debug('User {} profile page has been rendered.'
-                                 .format(current_user.login))
+            logging.debug('User {} profile page has been rendered.'
+                          .format(current_user.login))
+            return render_template('user_profile.html')
+
         else:
             user = self.get_model(user_id, UserModel)
-            return render_template('user_info.html', user=user), \
-                   logging.debug('User {} info page has been rendered.'
-                                 .format(user.login))
+            logging.debug('User {} info page has been rendered.'
+                          .format(user.login))
+            return render_template('user_info.html', user=user)
+
 
 
 class EditUserProfileView(BaseUsersView):
@@ -127,8 +134,9 @@ class EditUserProfileView(BaseUsersView):
         form.last_name.data = current_user.last_name
         form.office.data = current_user.office
         form.phone_number.data = current_user.phone_number
-        return render_template('edit_profile.html', form=form), \
-               logging.debug('Edit profile page has been rendered.')
+        logging.debug('Edit profile page has been rendered.')
+        return render_template('edit_profile.html', form=form)
+
 
     def post(self):
         form = EditProfileForm()
@@ -138,15 +146,14 @@ class EditUserProfileView(BaseUsersView):
 
             self.update_model(current_user.id, UserModel, user_dict)
 
-
             flash('Your profile has been updated.')
             logging.debug('User {} profile has been updated.'
                           .format(current_user.login))
-            return redirect('/profile/'), \
-                   logging.debug('User has been redirected to profile page.')
-        return render_template('edit_profile.html', form=form), \
-               logging.debug('User entered invalid values on submit. '
-                             'Edit profile form rendered again.')
+            logging.debug('User has been redirected to profile page.')
+            return redirect('/profile/')
+        logging.error('User entered invalid values on submit. '
+                      'Edit profile form rendered again.')
+        return render_template('edit_profile.html', form=form)
 
 
 class RestorePasswordView(BaseUsersView):
@@ -154,8 +161,9 @@ class RestorePasswordView(BaseUsersView):
     @staticmethod
     def get():
         form = RestorePasswordForm()
-        return render_template('restore_password.html', form=form), \
-               logging.debug('Restore password page has been rendered.')
+        logging.debug('Restore password page has been rendered.')
+        return render_template('restore_password.html', form=form)
+
 
     def post(self):
         form = RestorePasswordForm()
@@ -166,11 +174,11 @@ class RestorePasswordView(BaseUsersView):
 
             if form.login.data != user.login:
                 flash('Invalid username or email.')
-                logging.debug('User {} entered invalid username or email.'
+                logging.error('User {} entered invalid username or email.'
                               .format(current_user.login))
-                return redirect('/restore/'), \
-                       logging.debug('User {} has been redirected to restore page.'
-                                     .format(current_user.login))
+                logging.error('User {} has been redirected to restore page.'
+                              .format(current_user.login))
+                return redirect('/restore/')
 
             password_hash = generate_password_hash(form.password.data)
             user_dict = {
@@ -187,12 +195,12 @@ class RestorePasswordView(BaseUsersView):
                              'email/restore',
                              user=user,
                              password=form.password.data)
+            logging.debug('User {} has been redirected to login page.'
+                          .format(current_user.login))
+            return redirect('/login/')
 
-            return redirect('/login/'), \
-                   logging.debug('User {} has been redirected to login page.'
-                                 .format(current_user.login))
+        logging.debug('User entered invalid values on submit. '
+                      'Restore password page rendered again.')
+        return render_template('restore_password.html', form=form)
 
-        return render_template('restore_password.html', form=form), \
-               logging.debug('User entered invalid values on submit. '
-                             'Restore password page rendered again.')
 

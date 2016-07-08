@@ -12,5 +12,5 @@ logging.config.dictConfig(LOGGING)
 class Index(BaseMethodView):
 
     def get(self):
-        logging.debug('Index resource')
+        logging.debug('Get.Index template.')
         return render_template('index.html')

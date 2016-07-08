@@ -19,7 +19,7 @@ class RequestView(BaseRequestView):
     @login_required
     def get(self):
         select_category = request.values.get('select')
-        logging.info('Selected category: {}'.format(select_category))
+        logging.debug('GET.Selected category: {}'.format(select_category))
         requests = None
         if select_category:
             requests = self.get_requests_by_category(category=select_category,
@@ -63,7 +63,7 @@ class RequestView(BaseRequestView):
         logging.info('Owner is:{}'.format(owner))
         send_async_email(to=owner.email,
                          subject='Hello From Request',
-                         template='email/request-notify',
+                         template='email/outcome-request-notify',
                          user=owner,
                          book=book)
 
